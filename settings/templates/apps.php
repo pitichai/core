@@ -33,6 +33,15 @@
 		</span>
 	</p>
 	{{/if}}
+	{{#if update}}
+	<input class="update" type="submit" value="<?php p($l->t('Update to {{update}}')); ?>" data-appid="{{id}}" />
+	{{/if}}
+	{{#if active}}
+	<input class="enable" type="submit" data-appid="{{id}}" data-active="true" value="<?php p($l->t("Disable"));?>"/>
+	{{else}}
+	<input class="enable" type="submit" data-appid="{{id}}" data-active="false" value="<?php p($l->t("Enable"));?>"/>
+	{{/if}}
+
 	</div>
 </script>
 

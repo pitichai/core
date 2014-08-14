@@ -37,4 +37,4 @@ switch($category) {
 }
 
 
-OCP\JSON::success($apps);
+OCP\JSON::success(array("apps" => $apps));

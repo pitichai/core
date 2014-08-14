@@ -53,7 +53,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 				var source   = $("#app-template").html();
 				var template = Handlebars.compile(source);
 
-				_.each(apps, function(app) {
+				_.each(apps.apps, function(app) {
 					var html = template(app);
 					$('#app-content').append(html);
 				});

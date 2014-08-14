@@ -30,17 +30,8 @@ OC_Util::checkAdminUser();
 \OCP\Util::addScript("settings", "apps");
 OC_App::setActiveNavigationEntry( "core_apps" );
 
-//$combinedApps = OC_App::listAllApps();
 //$groups = \OC_Group::getGroups();
 
 $tmpl = new OC_Template( "settings", "apps", "user" );
-
-//$tmpl->assign('apps', $combinedApps);
-//$tmpl->assign('groups', $groups);
-
-//$appid = (isset($_GET['appid'])?strip_tags($_GET['appid']):'');
-//
-//$tmpl->assign('appid', $appid);
-
 $tmpl->printPage();
 
