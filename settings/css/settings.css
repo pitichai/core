@@ -144,6 +144,26 @@ small.recommendedapp { color:#FFF; background-color:#888; font-weight:bold; font
 small.externalapp.list, small.recommendedapp.list { position: absolute; right: 10px; top: 12px; }
 span.version { margin-left:1em; margin-right:1em; color:#555; }
 
+.app-image {
+	display: inline-block;
+	float: left;
+	padding-right: 10px;
+	width: 140px;
+	height: 100px;
+}
+.app-name,
+.app-version {
+	display: inline-block;
+}
+.app-description {
+	clear: both;
+}
+.app-description pre {
+	white-space: pre-line;
+}
+
+
+
 
 /* Transition to complete width! */
 .app:hover, .app:active { max-width: inherit; }

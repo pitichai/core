@@ -6,17 +6,16 @@
 
 <script id="app-template" type="text/x-handlebars">
 	<div class="section" id="app-{{id}}">
-	<div>
+	<div class="app-image">
 		<img src="{{preview}}"></img>
 	</div>
-	<h2>{{name}}</h2>
-	<div>{{version}}</div>
-	<div>{{author}}</div>
-	<div>{{license}}</div>
-	<div>{{detailpage}}</div>
-	<div><pre>{{description}}</pre></div>
-	<div>{{changed}}</div>
-	<div>{{{score}}}</div>
+	<h2 class="app-name"><a href="{{detailpage}}" target="_blank">{{name}}</a></h2>
+	<div class="app-version">{{version}}</div>
+	<div class="app-author"><?php p($l->t('by')); ?> {{author}} ({{license}})</div>
+	<div class="app-score">{{{score}}}</div>
+	<div class="app-detailpage"></div>
+	<div class="app-description"><pre>{{description}}</pre></div>
+	<div class="app-changed">{{changed}}</div>
 	{{#if documentation}}
 	<p class="documentation">
 		<?php p($l->t("Documentation:"));?>
