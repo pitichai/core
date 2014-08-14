@@ -7,7 +7,7 @@
 <script id="app-template" type="text/x-handlebars">
 	<div class="section" id="app-{{id}}">
 	{{#if preview}}
-	<div class="app-image">
+	<div class="app-image{{#if previewAsIcon}} app-image-icon{{/if}}">
 		<img src="{{preview}}"></img>
 	</div>
 	{{/if}}

@@ -846,7 +846,11 @@ class OC_App {
 
 				$info['update'] = OC_Installer::isUpdateAvailable($app);
 
-				$info['preview'] = OC_Helper::imagePath('settings', 'trans.png');
+				$appIcon = self::getAppPath($app) . '/img/' . $app.'.png';
+				if (file_exists($appIcon)) {
+					$info['preview'] = OC_Helper::imagePath($app, $app.'.png');
+					$info['previewAsIcon'] = true;
+				}
 				$info['version'] = OC_App::getAppVersion($app);
 				$appList[] = $info;
 			}
