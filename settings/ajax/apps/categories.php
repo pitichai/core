@@ -11,8 +11,8 @@ OC_JSON::checkAdminUser();
 $l = OC_L10N::get('settings');
 
 $categories = array(
-	array('id' => 0, 'displayName' => (string)$l->t('Installed') ),
-	array('id' => 1, 'displayName' => (string)$l->t('Not Installed') ),
+	array('id' => 0, 'displayName' => (string)$l->t('Enabled') ),
+	array('id' => 1, 'displayName' => (string)$l->t('Not enabled') ),
 );
 
 if(OC_Config::getValue('appstoreenabled', true)) {
