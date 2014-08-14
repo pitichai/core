@@ -6,12 +6,18 @@
 
 <script id="app-template" type="text/x-handlebars">
 	<div class="section" id="app-{{id}}">
+	{{#if preview}}
 	<div class="app-image">
 		<img src="{{preview}}"></img>
 	</div>
+	{{/if}}
 	<h2 class="app-name"><a href="{{detailpage}}" target="_blank">{{name}}</a></h2>
-	<div class="app-version">{{version}}</div>
-	<div class="app-author"><?php p($l->t('by')); ?> {{author}} ({{license}})</div>
+	<div class="app-version"> {{version}}</div>
+	<div class="app-author"><?php p($l->t('by')); ?> {{author}}
+		{{#if license}}
+		({{license}}-<?php p($l->t('licensed')); ?>)
+		{{/if}}
+	</div>
 	<div class="app-score">{{{score}}}</div>
 	<div class="app-detailpage"></div>
 	<div class="app-description"><pre>{{description}}</pre></div>
