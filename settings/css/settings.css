@@ -178,11 +178,6 @@ span.version { margin-left:1em; margin-right:1em; color:#555; }
 .app-description pre {
 	white-space: pre-line;
 }
-.enable {
-	position: absolute;
-	right: 10px;
-	top: 25px;
-}
 
 
 
