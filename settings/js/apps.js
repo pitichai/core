@@ -37,7 +37,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		if (OC.Settings.Apps.State.currentCategory === categoryId) {
 			return;
 		}
-		$('#app-content')
+		$('#apps-list')
 			.addClass('icon-loading')
 			.html('');
 		$('#app-category-' + OC.Settings.Apps.State.currentCategory).removeClass('active');
@@ -55,7 +55,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 
 				_.each(apps.apps, function(app) {
 					var html = template(app);
-					$('#app-content').append(html);
+					$('#apps-list').append(html);
 				});
 			},
 			complete: function() {
