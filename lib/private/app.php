@@ -800,7 +800,7 @@ class OC_App {
 	 * Lists all apps, this is used in apps.php
 	 * @return array
 	 */
-	public static function listAllApps() {
+	public static function listAllApps($onlyLocal = false) {
 		$installedApps = OC_App::getAllApps();
 
 		//TODO which apps do we want to blacklist and how do we integrate
@@ -851,7 +851,11 @@ class OC_App {
 				$appList[] = $info;
 			}
 		}
-		$remoteApps = OC_App::getAppstoreApps();
+		if ($onlyLocal) {
+			$remoteApps = array();
+		} else {
+			$remoteApps = OC_App::getAppstoreApps();
+		}
 		if ($remoteApps) {
 			// Remove duplicates
 			foreach ($appList as $app) {
@@ -902,63 +906,68 @@ class OC_App {
 	 * @return array, multi-dimensional array of apps.
 	 *     Keys: id, name, type, typename, personid, license, detailpage, preview, changed, description
 	 */
-	public static function getAppstoreApps($filter = 'approved') {
-		$categoryNames = OC_OCSClient::getCategories();
-		if (is_array($categoryNames)) {
-			// Check that categories of apps were retrieved correctly
-			if (!$categories = array_keys($categoryNames)) {
+	public static function getAppstoreApps($filter = 'approved', $category = null) {
+		$categories = array($category);
+		if (is_null($category)) {
+			$categoryNames = OC_OCSClient::getCategories();
+			if (is_array($categoryNames)) {
+				// Check that categories of apps were retrieved correctly
+				if (!$categories = array_keys($categoryNames)) {
+					return false;
+				}
+			} else {
 				return false;
 			}
+		}
 
-			$page = 0;
-			$remoteApps = OC_OCSClient::getApplications($categories, $page, $filter);
-			$app1 = array();
-			$i = 0;
-			foreach ($remoteApps as $app) {
-				$app1[$i] = $app;
-				$app1[$i]['author'] = $app['personid'];
-				$app1[$i]['ocs_id'] = $app['id'];
-				$app1[$i]['internal'] = $app1[$i]['active'] = 0;
-				$app1[$i]['update'] = false;
-				$app1[$i]['groups'] = false;
-				$app1[$i]['removable'] = false;
-				if ($app['label'] == 'recommended') {
-					$app1[$i]['internallabel'] = 'Recommended';
-					$app1[$i]['internalclass'] = 'recommendedapp';
-				} else {
-					$app1[$i]['internallabel'] = '3rd Party';
-					$app1[$i]['internalclass'] = 'externalapp';
-				}
-
-
-				// rating img
-				if ($app['score'] < 5) {
-					$img = OC_Helper::imagePath( "core", "rating/s1.png" );
-				} elseif ($app['score'] < 15) {
-					$img = OC_Helper::imagePath( "core", "rating/s2.png" );
-				} elseif($app['score'] < 25) {
-					$img = OC_Helper::imagePath( "core", "rating/s3.png" );
-				} elseif($app['score'] < 35) {
-					$img = OC_Helper::imagePath( "core", "rating/s4.png" );
-				} elseif($app['score'] < 45) {
-					$img = OC_Helper::imagePath( "core", "rating/s5.png" );
-				} elseif($app['score'] < 55) {
-					$img = OC_Helper::imagePath( "core", "rating/s6.png" );
-				} elseif($app['score'] < 65) {
-					$img = OC_Helper::imagePath( "core", "rating/s7.png" );
-				} elseif($app['score'] < 75) {
-					$img = OC_Helper::imagePath( "core", "rating/s8.png" );
-				} elseif($app['score'] < 85) {
-					$img = OC_Helper::imagePath( "core", "rating/s9.png" );
-				} elseif($app['score'] < 95) {
-					$img = OC_Helper::imagePath( "core", "rating/s10.png" );
-				} elseif($app['score'] < 100) {
-					$img = OC_Helper::imagePath( "core", "rating/s11.png" );
-				}
-
-				$app1[$i]['score'] = '<img src="' . $img . '"> Score: ' . $app['score'] . '%';
-				$i++;
+		$page = 0;
+		$remoteApps = OC_OCSClient::getApplications($categories, $page, $filter);
+		$app1 = array();
+		$i = 0;
+		foreach ($remoteApps as $app) {
+			$app1[$i] = $app;
+			$app1[$i]['author'] = $app['personid'];
+			$app1[$i]['ocs_id'] = $app['id'];
+			$app1[$i]['internal'] = $app1[$i]['active'] = 0;
+			$app1[$i]['update'] = false;
+			$app1[$i]['groups'] = false;
+			$app1[$i]['removable'] = false;
+			if ($app['label'] == 'recommended') {
+				$app1[$i]['internallabel'] = 'Recommended';
+				$app1[$i]['internalclass'] = 'recommendedapp';
+			} else {
+				$app1[$i]['internallabel'] = '3rd Party';
+				$app1[$i]['internalclass'] = 'externalapp';
 			}
+
+
+			// rating img
+			if ($app['score'] < 5) {
+				$img = OC_Helper::imagePath( "core", "rating/s1.png" );
+			} elseif ($app['score'] < 15) {
+				$img = OC_Helper::imagePath( "core", "rating/s2.png" );
+			} elseif($app['score'] < 25) {
+				$img = OC_Helper::imagePath( "core", "rating/s3.png" );
+			} elseif($app['score'] < 35) {
+				$img = OC_Helper::imagePath( "core", "rating/s4.png" );
+			} elseif($app['score'] < 45) {
+				$img = OC_Helper::imagePath( "core", "rating/s5.png" );
+			} elseif($app['score'] < 55) {
+				$img = OC_Helper::imagePath( "core", "rating/s6.png" );
+			} elseif($app['score'] < 65) {
+				$img = OC_Helper::imagePath( "core", "rating/s7.png" );
+			} elseif($app['score'] < 75) {
+				$img = OC_Helper::imagePath( "core", "rating/s8.png" );
+			} elseif($app['score'] < 85) {
+				$img = OC_Helper::imagePath( "core", "rating/s9.png" );
+			} elseif($app['score'] < 95) {
+				$img = OC_Helper::imagePath( "core", "rating/s10.png" );
+			} elseif($app['score'] < 100) {
+				$img = OC_Helper::imagePath( "core", "rating/s11.png" );
+			}
+
+			$app1[$i]['score'] = '<img src="' . $img . '">';
+			$i++;
 		}
 
 		if (empty($app1)) {
