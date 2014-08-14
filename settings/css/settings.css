@@ -144,6 +144,10 @@ small.recommendedapp { color:#FFF; background-color:#888; font-weight:bold; font
 small.externalapp.list, small.recommendedapp.list { position: absolute; right: 10px; top: 12px; }
 span.version { margin-left:1em; margin-right:1em; color:#555; }
 
+#apps-list {
+	position: relative;
+	height: 100%;
+}
 .section {
 	position: relative;
 }

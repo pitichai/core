@@ -59,7 +59,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 				});
 			},
 			complete: function() {
-				$('#app-content').removeClass('icon-loading');
+				$('#apps-list').removeClass('icon-loading');
 			}
 		});
 	}

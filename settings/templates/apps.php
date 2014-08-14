@@ -50,6 +50,6 @@
 
 	</ul>
 </div>
-<div id="app-content" class="icon-loading">
-	<div id="apps-list"></div>
+<div id="app-content">
+	<div id="apps-list" class="icon-loading"></div>
 </div>
