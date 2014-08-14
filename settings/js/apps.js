@@ -56,12 +56,48 @@ OC.Settings.Apps = OC.Settings.Apps || {
 				_.each(apps.apps, function(app) {
 					var html = template(app);
 					$('#apps-list').append(html);
+
+					var page = $('#app-' + app.id);
+					// set group select properly
+					if(OC.Settings.Apps.isType(app, 'filesystem') || OC.Settings.Apps.isType(app, 'prelogin') ||
+						OC.Settings.Apps.isType(app, 'authentication') || OC.Settings.Apps.isType(app, 'logging')) {
+						page.find(".groups-enable").hide();
+						page.find("label[for='groups_enable-"+app.id+"']").hide();
+						page.find(".groups-enable").attr('checked', null);
+					} else {
+						$('#group_select > option').each(function (i, el) {
+							app.groups = app.groups || [];
+							if (app.groups.length === 0 || app.groups.indexOf(el.value) >= 0) {
+								$(el).attr('selected', 'selected');
+							} else {
+								$(el).attr('selected', null);
+							}
+						});
+						if (app.active) {
+							if (app.groups.length) {
+								$('#group_select').multiSelect();
+								page.find(".groups-enable").attr('checked','checked');
+							} else {
+								page.find(".groups-enable").attr('checked', null);
+							}
+							page.find(".groups-enable").show();
+							page.find("label[for='groups_enable']").show();
+						} else {
+							page.find(".groups-enable").hide();
+							page.find("label[for='groups_enable']").hide();
+						}
+					}
+
 				});
 			},
 			complete: function() {
 				$('#apps-list').removeClass('icon-loading');
 			}
 		});
+	},
+
+	isType: function(app, type){
+		return app.types && app.types.indexOf(type) !== -1;
 	}
 };
 
@@ -72,6 +108,18 @@ $(document).ready(function () {
 		var categoryId = $(this).data('categoryId');
 
 		OC.Settings.Apps.loadCategory(categoryId);
+	});
+
+	$(document).on('change', ".groups-enable", function() {
+		if (this.checked) {
+			$(this).parent().find("div.multiselect").parent().remove();
+			$(this).parent().find('#group_select').multiSelect();
+		} else {
+			$(this).parent().find('#group_select').hide().val(null);
+			$(this).parent().find("div.multiselect").parent().remove();
+		}
+
+		$(this).parent().find('#group_select').change();
 	});
 
 });

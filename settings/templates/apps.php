@@ -38,6 +38,15 @@
 	{{/if}}
 	{{#if active}}
 	<input class="enable" type="submit" data-appid="{{id}}" data-active="true" value="<?php p($l->t("Disable"));?>"/>
+	<input type="checkbox" class="groups-enable" id="groups_enable-{{id}}"/>
+	<label for="groups_enable-{{id}}"><?php p($l->t('Enable only for specific groups')); ?></label>
+	<br />
+	<select class="hidden" id="group_select" multiple="multiple" title="<?php p($l->t('All')); ?>">
+		<?php foreach($_['groups'] as $group):?>
+			<option value="<?php p($group);?>"><?php p($group); ?></option>
+		<?php endforeach;?>
+	</select>
+
 	{{else}}
 	<input class="enable" type="submit" data-appid="{{id}}" data-active="false" value="<?php p($l->t("Enable"));?>"/>
 	{{/if}}
