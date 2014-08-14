@@ -151,8 +151,18 @@ span.version { margin-left:1em; margin-right:1em; color:#555; }
 	display: inline-block;
 	float: left;
 	padding-right: 10px;
-	width: 140px;
-	height: 100px;
+	width: 80px;
+	height: 80px;
+}
+.app-image img {
+	max-width: 80px;
+	max-height: 80px;
+}
+.app-image-icon img {
+	background-color: #ccc;
+	width: 60px;
+	padding: 10px;
+	border-radius: 3px;
 }
 .app-name,
 .app-version {
