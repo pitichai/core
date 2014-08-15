@@ -26,15 +26,15 @@
 	<p class="documentation">
 		<?php p($l->t("Documentation:"));?>
 		<span class="userDocumentation appslink">
-		<a id='userDocumentation' href='{{{documentation.user}}}' target="_blank"><?php p($l->t("User Documentation:"));?></a>
+		<a id='userDocumentation' href='{{documentation.user}}' target="_blank"><?php p($l->t("User Documentation:"));?></a>
 		</span>
 		<span class="adminDocumentation appslink">
-		<a id='adminDocumentation' href='{{{documentation.admin}}}' target="_blank"><?php p($l->t("Admin Documentation:"));?></a>
+		<a id='adminDocumentation' href='{{documentation.admin}}' target="_blank"><?php p($l->t("Admin Documentation:"));?></a>
 		</span>
 	</p>
 	{{/if}}
 	{{#if update}}
-	<input class="update" type="submit" value="<?php p($l->t('Update to {{update}}')); ?>" data-appid="{{id}}" />
+	<input class="update" type="submit" value="<?php p($l->t('Update to %s', array('{{update}}'))); ?>" data-appid="{{id}}" />
 	{{/if}}
 	{{#if active}}
 	<input class="enable" type="submit" data-appid="{{id}}" data-active="true" value="<?php p($l->t("Disable"));?>"/>
