@@ -1,5 +1,14 @@
 /* global Handlebars */
 
+Handlebars.registerHelper('score', function() {
+	if(this.score) {
+		var score = Math.round( this.score / 10 );
+		var imageName = 'rating/s' + score + '.png';
+		
+		return new Handlebars.SafeString('<img src="' + OC.imagePath('core', imageName) + '">');
+	}
+});
+
 OC.Settings = OC.Settings || {};
 OC.Settings.Apps = OC.Settings.Apps || {
 

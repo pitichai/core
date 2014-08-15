@@ -935,6 +935,7 @@ class OC_App {
 			$app1[$i]['internal'] = $app1[$i]['active'] = 0;
 			$app1[$i]['update'] = false;
 			$app1[$i]['groups'] = false;
+			$app1[$i]['score'] = $app['score'];
 			$app1[$i]['removable'] = false;
 			if ($app['label'] == 'recommended') {
 				$app1[$i]['internallabel'] = 'Recommended';
@@ -944,33 +945,6 @@ class OC_App {
 				$app1[$i]['internalclass'] = 'externalapp';
 			}
 
-
-			// rating img
-			if ($app['score'] < 5) {
-				$img = OC_Helper::imagePath( "core", "rating/s1.png" );
-			} elseif ($app['score'] < 15) {
-				$img = OC_Helper::imagePath( "core", "rating/s2.png" );
-			} elseif($app['score'] < 25) {
-				$img = OC_Helper::imagePath( "core", "rating/s3.png" );
-			} elseif($app['score'] < 35) {
-				$img = OC_Helper::imagePath( "core", "rating/s4.png" );
-			} elseif($app['score'] < 45) {
-				$img = OC_Helper::imagePath( "core", "rating/s5.png" );
-			} elseif($app['score'] < 55) {
-				$img = OC_Helper::imagePath( "core", "rating/s6.png" );
-			} elseif($app['score'] < 65) {
-				$img = OC_Helper::imagePath( "core", "rating/s7.png" );
-			} elseif($app['score'] < 75) {
-				$img = OC_Helper::imagePath( "core", "rating/s8.png" );
-			} elseif($app['score'] < 85) {
-				$img = OC_Helper::imagePath( "core", "rating/s9.png" );
-			} elseif($app['score'] < 95) {
-				$img = OC_Helper::imagePath( "core", "rating/s10.png" );
-			} elseif($app['score'] < 100) {
-				$img = OC_Helper::imagePath( "core", "rating/s11.png" );
-			}
-
-			$app1[$i]['score'] = '<img src="' . $img . '">';
 			$i++;
 		}
 
