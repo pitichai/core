@@ -267,6 +267,7 @@ class OC_User {
 			self::getUserSession()->setLoginName($uid);
 
 			OC_Hook::emit( "OC_User", "post_login", array( "uid" => $uid, 'password'=>'' ));
+			OC_Util::copySkeleton();
 			return true;
 		}
 		return false;

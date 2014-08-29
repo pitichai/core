@@ -11,6 +11,10 @@ class OC_Util {
 	public static $headers=array();
 	private static $rootMounted=false;
 	private static $fsSetup=false;
+	/**
+	 * @var bool
+	 */
+	private static $copySkeleton = false;
 
 	private static function initLocalStorageRootFS() {
 		// mount local file backend as root
@@ -114,15 +118,6 @@ class OC_Util {
 				return $storage;
 			});
 
-			// copy skeleton for local storage only
-			if ( ! isset( $objectStore ) ) {
-				$userRoot = OC_User::getHome($user);
-				$userDirectory = $userRoot . '/files';
-				if( !is_dir( $userDirectory )) {
-					mkdir( $userDirectory, 0755, true );
-					OC_Util::copySkeleton($userDirectory);
-				}
-			}
 
 			$userDir = '/'.$user.'/files';
 
@@ -132,7 +127,29 @@ class OC_Util {
 			$fileOperationProxy = new OC_FileProxy_FileOperations();
 			OC_FileProxy::register($fileOperationProxy);
 
+			// create user home
+			$dir = '/' . $user;
+			$root = \OC::$server->getRootFolder();
+			$folder = null;
+
+			if (!$root->nodeExists($dir)) {
+				$folder = $root->newFolder($dir);
+			} else {
+				$folder = $root->get($dir);
+			}
+
+			// create /files
+			$dir = '/files';
+			if (!$folder->nodeExists($dir)) {
+				//remember folder for post login copying of skeleton
+				$folder->newFolder($dir);
+				self::$copySkeleton = true;
+			} else {
+				$folder->get($dir);
+			}
+
 			OC_Hook::emit('OC_Filesystem', 'setup', array('user' => $user, 'user_dir' => $userDir));
+
 		}
 		return true;
 	}
@@ -205,15 +222,42 @@ class OC_Util {
 
 	/**
 	 * copies the user skeleton files into the fresh user home files
-	 * @param string $userDirectory
 	 */
-	public static function copySkeleton($userDirectory) {
-		$skeletonDirectory = OC_Config::getValue('skeletondirectory', \OC::$SERVERROOT.'/core/skeleton');
-		if (!empty($skeletonDirectory)) {
-			OC_Util::copyr($skeletonDirectory , $userDirectory);
+	public static function copySkeleton() {
+		if (self::$copySkeleton) {
+			self::$copySkeleton = false;
+			$userDirectory = \OC::$server->getUserFolder();
+			$skeletonDirectory = OC_Config::getValue('skeletondirectory', \OC::$SERVERROOT.'/core/skeleton');
+			if (!empty($skeletonDirectory) && $userDirectory instanceof \OCP\Files\Folder) {
+				self::streamCopyR($skeletonDirectory , $userDirectory);
+				// update the file cache
+				$userDirectory->getStorage()->getScanner()->scan('', \OC\Files\Cache\Scanner::SCAN_RECURSIVE);
+			}
 		}
 	}
 
+	/**
+	 * copies a directory recursively
+	 *
+	 * @param string $source
+	 * @param \OCP\Files\Folder $target
+	 * @return void
+	 */
+	public static function streamCopyR($source, \OCP\Files\Folder $target) {
+		$dir = opendir($source);
+		while (false !== ($file = readdir($dir))) {
+			if (!\OC\Files\Filesystem::isIgnoredDir($file)) {
+				if (is_dir($source . '/' . $file)) {
+					$child = $target->newFolder($file);
+					self::streamCopyR($source . '/' . $file, $child);
+				} else {
+					$child = $target->newFile($file);
+					stream_copy_to_stream(fopen($source . '/' . $file,'r'), $child->fopen('w'));
+				}
+			}
+		}
+		closedir($dir);
+	}
 	/**
 	 * copies a directory recursively
 	 * @param string $source
