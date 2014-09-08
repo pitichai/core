@@ -7,13 +7,15 @@ Handlebars.registerHelper('score', function() {
 		
 		return new Handlebars.SafeString('<img src="' + OC.imagePath('core', imageName) + '">');
 	}
+	return new Handlebars.SafeString('');
 });
 
 OC.Settings = OC.Settings || {};
 OC.Settings.Apps = OC.Settings.Apps || {
 
 	State: {
-		currentCategory: null
+		currentCategory: null,
+		apps: null
 	},
 
 	loadCategories: function() {
@@ -34,6 +36,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 			success:function (jsondata) {
 				var html = template(jsondata);
 				$('#apps-categories').html(html);
+				$('#app-category-' + OC.Settings.Apps.State.currentCategory).addClass('active');
 			},
 			complete: function() {
 				$('#app-navigation').removeClass('icon-loading');
@@ -50,8 +53,8 @@ OC.Settings.Apps = OC.Settings.Apps || {
 			.addClass('icon-loading')
 			.html('');
 		$('#app-category-' + OC.Settings.Apps.State.currentCategory).removeClass('active');
+		$('#app-category-' + categoryId).addClass('active');
 		OC.Settings.Apps.State.currentCategory = categoryId;
-		$('#app-category-' + OC.Settings.Apps.State.currentCategory).addClass('active');
 
 		$.ajax(OC.generateUrl('settings/apps/list?category={categoryId}', {
 			categoryId: categoryId
@@ -59,44 +62,12 @@ OC.Settings.Apps = OC.Settings.Apps || {
 			data:{},
 			type:'GET',
 			success:function (apps) {
+				OC.Settings.Apps.State.apps = _.indexBy(apps.apps, 'id');
 				var source   = $("#app-template").html();
 				var template = Handlebars.compile(source);
 
 				_.each(apps.apps, function(app) {
-					var html = template(app);
-					$('#apps-list').append(html);
-
-					var page = $('#app-' + app.id);
-					// set group select properly
-					if(OC.Settings.Apps.isType(app, 'filesystem') || OC.Settings.Apps.isType(app, 'prelogin') ||
-						OC.Settings.Apps.isType(app, 'authentication') || OC.Settings.Apps.isType(app, 'logging')) {
-						page.find(".groups-enable").hide();
-						page.find("label[for='groups_enable-"+app.id+"']").hide();
-						page.find(".groups-enable").attr('checked', null);
-					} else {
-						$('#group_select > option').each(function (i, el) {
-							app.groups = app.groups || [];
-							if (app.groups.length === 0 || app.groups.indexOf(el.value) >= 0) {
-								$(el).attr('selected', 'selected');
-							} else {
-								$(el).attr('selected', null);
-							}
-						});
-						if (app.active) {
-							if (app.groups.length) {
-								$('#group_select').multiSelect();
-								page.find(".groups-enable").attr('checked','checked');
-							} else {
-								page.find(".groups-enable").attr('checked', null);
-							}
-							page.find(".groups-enable").show();
-							page.find("label[for='groups_enable']").show();
-						} else {
-							page.find(".groups-enable").hide();
-							page.find("label[for='groups_enable']").hide();
-						}
-					}
-
+					OC.Settings.Apps.renderApp(app, template, null);
 				});
 			},
 			complete: function() {
@@ -105,16 +76,64 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		});
 	},
 
+	renderApp: function(app, template, selector) {
+		if (!template) {
+			var source   = $("#app-template").html();
+			template = Handlebars.compile(source);
+		}
+		if (typeof app === 'string') {
+			app = OC.Settings.Apps.State.apps[app];
+		}
+
+		var html = template(app);
+		if (selector) {
+			selector.html(html);
+		} else {
+			$('#apps-list').append(html);
+		}
+
+		var page = $('#app-' + app.id);
+		// set group select properly
+		if(OC.Settings.Apps.isType(app, 'filesystem') || OC.Settings.Apps.isType(app, 'prelogin') ||
+			OC.Settings.Apps.isType(app, 'authentication') || OC.Settings.Apps.isType(app, 'logging')) {
+			page.find(".groups-enable").hide();
+			page.find("label[for='groups_enable-"+app.id+"']").hide();
+			page.find(".groups-enable").attr('checked', null);
+		} else {
+			page.find('#group_select > option').each(function (i, el) {
+				app.groups = app.groups || [];
+				if (app.groups.length === 0 || app.groups.indexOf(el.value) >= 0) {
+					$(el).attr('selected', 'selected');
+				} else {
+					$(el).attr('selected', null);
+				}
+			});
+			if (app.active) {
+				if (app.groups.length) {
+					page.find('#group_select').multiSelect();
+					page.find(".groups-enable").attr('checked','checked');
+				} else {
+					page.find(".groups-enable").attr('checked', null);
+				}
+				page.find(".groups-enable").show();
+				page.find("label[for='groups_enable-"+app.id+"']").show();
+			} else {
+				page.find(".groups-enable").hide();
+				page.find("label[for='groups_enable-"+app.id+"']").hide();
+			}
+		}
+	},
+
 	isType: function(app, type){
 		return app.types && app.types.indexOf(type) !== -1;
 	},
 
-	enableApp:function(appid, active, element, groups) {
+	enableApp:function(appId, active, element, groups) {
 		groups = groups || [];
-		var appItem = $('div#app-'+appid+'');
+		var appItem = $('div#app-'+appId+'');
 		element.val(t('settings','Please wait....'));
 		if(active && !groups.length) {
-			$.post(OC.filePath('settings','ajax','disableapp.php'),{appid:appid},function(result) {
+			$.post(OC.filePath('settings','ajax','disableapp.php'),{appid:appId},function(result) {
 				if(!result || result.status !== 'success') {
 					if (result.data && result.data.message) {
 						OC.Settings.Apps.showErrorMessage(result.data.message);
@@ -125,16 +144,23 @@ OC.Settings.Apps = OC.Settings.Apps || {
 					}
 					element.val(t('settings','Disable'));
 					appItem.addClass('appwarning');
-				}
-				else {
-					OC.Settings.Apps.removeNavigation(appid);
-					appItem.fadeOut(function() {
-						appItem.remove();
-					});
+				} else {
+					appItem.data('active',false);
+					appItem.data('groups', '');
+					element.data('active',false);
+					OC.Settings.Apps.removeNavigation(appId);
+					appItem.removeClass('active');
+					element.val(t('settings','Enable'));
+					element.parent().find(".groups-enable").hide();
+					element.parent().find("#groups_enable-"+appId).hide();
+					element.parent().find("label[for='groups_enable-"+appId+"']").hide();
+					element.parent().find('#group_select').hide().val(null);
+					element.parent().find("div.multiselect").parent().remove();
+					OC.Settings.Apps.State.apps[appId].active = false;
 				}
 			},'json');
 		} else {
-			$.post(OC.filePath('settings','ajax','enableapp.php'),{appid: appid, groups: groups},function(result) {
+			$.post(OC.filePath('settings','ajax','enableapp.php'),{appid: appId, groups: groups},function(result) {
 				if(!result || result.status !== 'success') {
 					if (result.data && result.data.message) {
 						OC.Settings.Apps.showErrorMessage(result.data.message);
@@ -146,10 +172,33 @@ OC.Settings.Apps = OC.Settings.Apps || {
 					element.val(t('settings','Enable'));
 					appItem.addClass('appwarning');
 				} else {
-					OC.Settings.Apps.addNavigation(appid);
-					appItem.fadeOut(function() {
-						appItem.remove();
-					});
+					OC.Settings.Apps.addNavigation(appId);
+					appItem.data('active',true);
+					element.data('active',true);
+					appItem.addClass('active');
+					element.val(t('settings','Disable'));
+					var app = OC.Settings.Apps.State.apps[appId];
+					app.active = true;
+
+					if (OC.Settings.Apps.isType(app, 'filesystem') || OC.Settings.Apps.isType(app, 'prelogin') ||
+						OC.Settings.Apps.isType(app, 'authentication') || OC.Settings.Apps.isType(app, 'logging')) {
+						element.parent().find(".groups-enable").attr('checked', null);
+						element.parent().find("#groups_enable-"+appId).hide();
+						element.parent().find("label[for='groups_enable-"+appId+"']").hide();
+						element.parent().find(".groups-enable").hide();
+						element.parent().find("#groups_enable-"+appId).hide();
+						element.parent().find("label[for='groups_enable-"+appId+"']").hide();
+						element.parent().find('#group_select').hide().val(null);
+						element.parent().find("div.multiselect").parent().remove();
+					} else {
+						element.parent().find("#groups_enable-"+appId).show();
+						element.parent().find("label[for='groups_enable-"+appId+"']").show();
+						if (groups) {
+							appItem.data('groups', JSON.stringify(groups));
+						} else {
+							appItem.data('groups', '');
+						}
+					}
 				}
 			},'json')
 				.fail(function() {
@@ -157,7 +206,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 					appItem.data('errormsg', t('settings', 'Error while enabling app'));
 					appItem.data('active',false);
 					appItem.addClass('appwarning');
-					OC.Settings.Apps.removeNavigation(appid);
+					OC.Settings.Apps.removeNavigation(appId);
 					element.val(t('settings','Enable'));
 				});
 		}
@@ -211,15 +260,21 @@ OC.Settings.Apps = OC.Settings.Apps || {
 							.animate({opacity: 1})
 							.animate({opacity: 0.75});
 
-						if (!SVGSupport() && entry.icon.match(/\.svg$/i)) {
+						if (!OC.Util.hasSVGSupport() && entry.icon.match(/\.svg$/i)) {
 							$(img).addClass('svg');
-							replaceSVG();
+							OC.Util.replaceSVG();
 						}
 					}
 				}
 			}
 		});
 	},
+	showErrorMessage: function(message) {
+		$('.appinfo .warning')
+			.show()
+			.text(message);
+	}
+
 };
 
 $(document).ready(function () {
@@ -239,20 +294,15 @@ $(document).ready(function () {
 		OC.Settings.Apps.enableApp(appId, active, element);
 	});
 
-	$(document).on('change', '#group_select').change(function() {
-		var element = $('#app-content input.enable');
+	$(document).on('change', '#group_select', function() {
+		var element = $(this).parent().find('input.enable');
 		var groups = $(this).val();
-		var appid = element.data('appid');
-		if (appid) {
-			OC.Settings.Apps.enableApp(appid, false, element, groups);
-			var li = $('[data-id="'+appid+'"]');
-			var app = OC.get('appData_' + $(li).data('id'));
-			app.groups = groups;
-			li.data('groups', groups);
-			li.attr('data-groups', JSON.stringify(groups));
+		var appId = element.data('appid');
+		if (appId) {
+			OC.Settings.Apps.enableApp(appId, false, element, groups);
+			OC.Settings.Apps.State.apps[appId].groups = groups;
 		}
 	});
-
 
 	$(document).on('change', ".groups-enable", function() {
 		if (this.checked) {
