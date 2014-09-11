@@ -167,7 +167,6 @@ span.version { margin-left:1em; margin-right:1em; color:#555; }
 	position: relative;
 }
 .app-image {
-	display: inline-block;
 	float: left;
 	padding-right: 10px;
 	width: 80px;

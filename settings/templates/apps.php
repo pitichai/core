@@ -16,8 +16,7 @@
 <script id="app-template" type="text/x-handlebars">
 	<div class="section" id="app-{{id}}">
 	{{#if preview}}
-	<div class="app-image{{#if previewAsIcon}} app-image-icon{{/if}}">
-		<img src="{{preview}}" class="svg" />
+	<div class="app-image{{#if previewAsIcon}} app-image-icon{{/if}} hidden">
 	</div>
 	{{/if}}
 	<h2 class="app-name"><a href="{{detailpage}}" target="_blank">{{name}}</a></h2>

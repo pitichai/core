@@ -93,6 +93,19 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		}
 
 		var page = $('#app-' + app.id);
+
+		// image loading kung-fu
+		if (app.preview) {
+			var currentimage = new Image();
+			currentimage.src = app.preview;
+
+			currentimage.onload = function() {
+				page.find('.app-image')
+					.append(this)
+					.fadeIn();
+			};
+		}
+
 		// set group select properly
 		if(OC.Settings.Apps.isType(app, 'filesystem') || OC.Settings.Apps.isType(app, 'prelogin') ||
 			OC.Settings.Apps.isType(app, 'authentication') || OC.Settings.Apps.isType(app, 'logging')) {
