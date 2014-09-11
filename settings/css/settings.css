@@ -196,8 +196,9 @@ span.version { margin-left:1em; margin-right:1em; color:#555; }
 	white-space: pre-line;
 }
 
-
-
+#app-category-2 {
+	border-bottom: 1px solid #e8e8e8;
+}
 
 /* Transition to complete width! */
 .app:hover, .app:active { max-width: inherit; }

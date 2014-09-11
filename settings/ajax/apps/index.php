@@ -29,7 +29,14 @@ switch($category) {
 		});
 		break;
 	default:
-		$apps = \OC_App::getAppstoreApps('approved', $category);
+		if ($category === 2) {
+			$apps = \OC_App::getAppstoreApps('approved');
+			$apps = array_filter($apps, function($app) {
+				return isset($app['internalclass']) && $app['internalclass'] === 'recommendedapp';
+			});
+		} else {
+			$apps = \OC_App::getAppstoreApps('approved', $category);
+		}
 		if (!$apps) {
 			$apps = array();
 		}

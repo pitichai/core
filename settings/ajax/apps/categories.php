@@ -16,6 +16,7 @@ $categories = array(
 );
 
 if(OC_Config::getValue('appstoreenabled', true)) {
+	$categories[] = array('id' => 2, 'displayName' => (string)$l->t('Recommended') );
 	// apps from external repo via OCS
 	$ocs = OC_OCSClient::getCategories();
 	foreach($ocs as $k => $v) {
