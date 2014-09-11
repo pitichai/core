@@ -2,6 +2,15 @@
 {{#each this}}
 	<li id="app-category-{{id}}" data-category-id="{{id}}"><a>{{displayName}}</a></li>
 {{/each}}
+
+<?php if(OC_Config::getValue('appstoreenabled', true) === true): ?>
+	<li>
+		<a class="app-external" target="_blank" href="http://apps.owncloud.com/?xsortmode=high"><?php p($l->t('More apps'));?> …</a>
+	</li>
+	<li>
+		<a class="app-external" target="_blank" href="http://owncloud.org/dev"><?php p($l->t('Add your app'));?> …</a>
+	</li>
+<?php endif; ?>
 </script>
 
 <script id="app-template" type="text/x-handlebars">
