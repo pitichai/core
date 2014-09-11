@@ -161,18 +161,15 @@ if (isset($path)) {
 			$folder->assign('usedSpacePercent', 0);
 			$folder->assign('trash', false);
 			$tmpl->assign('folder', $folder->fetchPage());
-			$tmpl->assign('downloadURL',
-				OCP\Util::linkToPublic('files') . $urlLinkIdentifiers . '/download');
-			var_dump(OCP\Util::linkToPublic('files'));
+			$tmpl->assign('downloadURL', \OC::$server->getURLGenerator()->linkToRoute('core_share_download_share', array('token' => $token)));
 		} else {
 			$tmpl->assign('dir', $dir);
 
 			// Show file preview if viewer is available
 			if ($type == 'file') {
-				$tmpl->assign('downloadURL', OCP\Util::linkToPublic('files') . $urlLinkIdentifiers . '/download');
+				$tmpl->assign('downloadURL', \OC::$server->getURLGenerator()->getAbsoluteURL(\OC::$server->getURLGenerator()->linkToRoute('core_share_download_share', array('token' => $token))));
 			} else {
-				$tmpl->assign('downloadURL', OCP\Util::linkToPublic('files')
-										.$urlLinkIdentifiers.'/download&path='.urlencode($getPath));
+				$tmpl->assign('downloadURL', \OC::$server->getURLGenerator()->linkToRoute('core_share_download_share', array('token' => $getPath)));//OCP\Util::linkToPublic('files').$urlLinkIdentifiers.'/download&path='.urlencode($getPath));
 			}
 		}
 		$tmpl->printPage();

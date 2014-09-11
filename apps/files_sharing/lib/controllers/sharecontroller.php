@@ -91,9 +91,9 @@ class ShareController {
 	 */
 	public static function getPath($token) {
 		$linkItem = Share::getShareByToken($token, false);
+		$path = null;
 		if (is_array($linkItem) && isset($linkItem['uid_owner'])) {
 			// seems to be a valid share
-			$path = null;
 			$rootLinkItem = Share::resolveReShare($linkItem);
 			if (isset($rootLinkItem['uid_owner'])) {
 				JSON::checkUserExists($rootLinkItem['uid_owner']);
