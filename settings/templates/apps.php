@@ -39,12 +39,17 @@
 	{{#if documentation}}
 	<p class="documentation">
 		<?php p($l->t("Documentation:"));?>
+		{{#if documentation.user}}
 		<span class="userDocumentation appslink">
-		<a id='userDocumentation' href='{{documentation.user}}' target="_blank"><?php p($l->t("User Documentation:"));?></a>
+		<a id='userDocumentation' href='{{documentation.user}}' target="_blank"><?php p($l->t("User Documentation"));?></a>
 		</span>
+		{{/if}}
+
+		{{#if documentation.admin}}
 		<span class="adminDocumentation appslink">
-		<a id='adminDocumentation' href='{{documentation.admin}}' target="_blank"><?php p($l->t("Admin Documentation:"));?></a>
+		<a id='adminDocumentation' href='{{documentation.admin}}' target="_blank"><?php p($l->t("Admin Documentation"));?></a>
 		</span>
+		{{/if}}
 	</p>
 	{{/if}}
 	{{#if update}}
