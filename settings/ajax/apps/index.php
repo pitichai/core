@@ -33,6 +33,14 @@ switch($category) {
 		if (!$apps) {
 			$apps = array();
 		}
+		usort($apps, function ($a, $b) {
+			$a = (int)$a['score'];
+			$b = (int)$b['score'];
+			if ($a === $b) {
+				return 0;
+			}
+			return ($a > $b) ? -1 : 1;
+		});
 		break;
 }
 
