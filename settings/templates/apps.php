@@ -28,6 +28,9 @@
 		{{/if}}
 	</div>
 	<div class="app-score">{{{score}}}</div>
+	{{#if internalclass}}
+	<div class="{{internalclass}}">{{internallabel}}</div>
+	{{/if}}
 	<div class="app-detailpage"></div>
 	<div class="app-description"><pre>{{description}}</pre></div>
 	<!--<div class="app-changed">{{changed}}</div>-->

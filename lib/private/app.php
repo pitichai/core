@@ -808,6 +808,7 @@ class OC_App {
 
 		$blacklist = array('files'); //we don't want to show configuration for these
 		$appList = array();
+		$l = \OC::$server->getL10N('core');
 
 		foreach ($installedApps as $app) {
 			if (array_search($app, $blacklist) === false) {
@@ -834,13 +835,11 @@ class OC_App {
 
 				if(isset($info['shipped']) and ($info['shipped'] == 'true')) {
 					$info['internal'] = true;
-					$info['internallabel'] = 'Internal App';
-					$info['internalclass'] = '';
+					$info['internallabel'] = $l->t('Recommended');
+					$info['internalclass'] = 'recommendedapp';
 					$info['removable'] = false;
 				} else {
 					$info['internal'] = false;
-					$info['internallabel'] = '3rd Party';
-					$info['internalclass'] = 'externalapp';
 					$info['removable'] = true;
 				}
 
@@ -928,6 +927,7 @@ class OC_App {
 		$remoteApps = OC_OCSClient::getApplications($categories, $page, $filter);
 		$app1 = array();
 		$i = 0;
+		$l = \OC::$server->getL10N('core');
 		foreach ($remoteApps as $app) {
 			$app1[$i] = $app;
 			$app1[$i]['author'] = $app['personid'];
@@ -938,11 +938,8 @@ class OC_App {
 			$app1[$i]['score'] = $app['score'];
 			$app1[$i]['removable'] = false;
 			if ($app['label'] == 'recommended') {
-				$app1[$i]['internallabel'] = 'Recommended';
+				$app1[$i]['internallabel'] = $l->t('Recommended');
 				$app1[$i]['internalclass'] = 'recommendedapp';
-			} else {
-				$app1[$i]['internallabel'] = '3rd Party';
-				$app1[$i]['internalclass'] = 'externalapp';
 			}
 
 			$i++;
