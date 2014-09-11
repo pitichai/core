@@ -27,9 +27,11 @@
 		({{license}}-<?php p($l->t('licensed')); ?>)
 		{{/if}}
 	</div>
+	{{#if score}}
 	<div class="app-score">{{{score}}}</div>
+	{{/if}}
 	{{#if internalclass}}
-	<div class="{{internalclass}}">{{internallabel}}</div>
+	<div class="{{internalclass}} icon-checkmark">{{internallabel}}</div>
 	{{/if}}
 	<div class="app-detailpage"></div>
 	<div class="app-description"><pre>{{description}}</pre></div>
