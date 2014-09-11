@@ -169,7 +169,7 @@ if (isset($path)) {
 			if ($type == 'file') {
 				$tmpl->assign('downloadURL', \OC::$server->getURLGenerator()->getAbsoluteURL(\OC::$server->getURLGenerator()->linkToRoute('core_share_download_share', array('token' => $token))));
 			} else {
-				$tmpl->assign('downloadURL', \OC::$server->getURLGenerator()->linkToRoute('core_share_download_share', array('token' => $getPath)));
+				$tmpl->assign('downloadURL', \OC::$server->getURLGenerator()->linkToRoute('core_share_download_share', array('token' => $token, 'path' => $getPath)));
 			}
 		}
 		$tmpl->printPage();
