@@ -30,7 +30,7 @@
 	<div class="app-score">{{{score}}}</div>
 	<div class="app-detailpage"></div>
 	<div class="app-description"><pre>{{description}}</pre></div>
-	<div class="app-changed">{{changed}}</div>
+	<!--<div class="app-changed">{{changed}}</div>-->
 	{{#if documentation}}
 	<p class="documentation">
 		<?php p($l->t("Documentation:"));?>
