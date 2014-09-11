@@ -890,9 +890,11 @@ class OC_App {
 			}
 
 			// priority 3: recommended
-			if ($a['internalclass'] != $b['internalclass']) {
-				$aTemp = ($a['internalclass'] == 'recommendedapp' ? 1 : 0);
-				$bTemp = ($b['internalclass'] == 'recommendedapp' ? 1 : 0);
+			$internalClassA = isset($a['internalclass']) ? $a['internalclass'] : '';
+			$internalClassB = isset($b['internalclass']) ? $b['internalclass'] : '';
+			if ($internalClassA != $internalClassB) {
+				$aTemp = ($internalClassA == 'recommendedapp' ? 1 : 0);
+				$bTemp = ($internalClassB == 'recommendedapp' ? 1 : 0);
 				return ($bTemp - $aTemp);
 			}
 
