@@ -1,5 +1,6 @@
 <?php
 // Load other apps for file previews
+use OCA\Files_Sharing\Controllers\ShareController;
 use OCA\Files_Sharing\Helper;
 
 OC_App::loadApps();
@@ -106,22 +107,7 @@ if (isset($path)) {
 	$file = basename($path);
 	// Download the file
 	if (isset($_GET['download'])) {
-		if (!\OCP\App::isEnabled('files_encryption')) {
-			// encryption app requires the session to store the keys in
-			\OC::$server->getSession()->close();
-		}
-		if (isset($_GET['files'])) { // download selected files
-			$files = urldecode($_GET['files']);
-			$files_list = json_decode($files);
-			// in case we get only a single file
-			if ($files_list === NULL ) {
-				$files_list = array($files);
-			}
-			OC_Files::get($path, $files_list, $_SERVER['REQUEST_METHOD'] == 'HEAD');
-		} else {
-			OC_Files::get($dir, $file, $_SERVER['REQUEST_METHOD'] == 'HEAD');
-		}
-		exit();
+		ShareController::downloadShare($token);
 	} else {
 		OCP\Util::addScript('files', 'file-upload');
 		OCP\Util::addStyle('files_sharing', 'public');
@@ -141,7 +127,7 @@ if (isset($path)) {
 		$tmpl->assign('server2serversharing', Helper::isOutgoingServer2serverShareEnabled());
 		$tmpl->assign('protected', isset($linkItem['share_with']) ? 'true' : 'false');
 
-		$urlLinkIdentifiers= (isset($token)?'&t='.$token:'')
+		$urlLinkIdentifiers= (isset($token)?'/'.$token:'')
 							.(isset($_GET['dir'])?'&dir='.$_GET['dir']:'')
 							.(isset($_GET['file'])?'&file='.$_GET['file']:'');
 		// Show file list
@@ -176,16 +162,17 @@ if (isset($path)) {
 			$folder->assign('trash', false);
 			$tmpl->assign('folder', $folder->fetchPage());
 			$tmpl->assign('downloadURL',
-				OCP\Util::linkToPublic('files') . $urlLinkIdentifiers . '&download&path=' . urlencode($getPath));
+				OCP\Util::linkToPublic('files') . $urlLinkIdentifiers . '/download');
+			var_dump(OCP\Util::linkToPublic('files'));
 		} else {
 			$tmpl->assign('dir', $dir);
 
 			// Show file preview if viewer is available
 			if ($type == 'file') {
-				$tmpl->assign('downloadURL', OCP\Util::linkToPublic('files') . $urlLinkIdentifiers . '&download');
+				$tmpl->assign('downloadURL', OCP\Util::linkToPublic('files') . $urlLinkIdentifiers . '/download');
 			} else {
 				$tmpl->assign('downloadURL', OCP\Util::linkToPublic('files')
-										.$urlLinkIdentifiers.'&download&path='.urlencode($getPath));
+										.$urlLinkIdentifiers.'/download&path='.urlencode($getPath));
 			}
 		}
 		$tmpl->printPage();
