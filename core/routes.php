@@ -101,13 +101,14 @@ $this->create('core_avatar_post_cropped', '/avatar/cropped')
 	->action('OC\Core\Avatar\Controller', 'postCroppedAvatar');
 
 // Sharing routes
-$this->create('core_share_show_share', '/s/{token}')
-	->get()
-	->action('OCA\\Files_Sharing\\Controllers\\ShareController', 'showShare');
-
-$this->create('core_share_download_share', '/s/{token}/download')
-	->get()
-	->action('OCA\\Files_Sharing\\Controllers\\ShareController', 'downloadShare');
+$this->create('files_sharing.sharecontroller.showshare', '/s/{token}')->action(function($urlParams) {
+	$app = new \OCA\Files_Sharing\Application($urlParams);
+	$app->dispatch('ShareController', 'showShare');
+});
+$this->create('files_sharing.sharecontroller.downloadshare', '/s/{token}/download')->action(function($urlParams) {
+	$app = new \OCA\Files_Sharing\Application($urlParams);
+	$app->dispatch('ShareController', 'downloadShare');
+});
 
 // used for heartbeat
 $this->create('heartbeat', '/heartbeat')->action(function(){
