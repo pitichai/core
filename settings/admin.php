@@ -7,10 +7,14 @@
 
 OC_Util::checkAdminUser();
 
-OC_Util::addStyle( "settings", "settings" );
-OC_Util::addScript( "settings", "admin" );
-OC_Util::addScript( "settings", "log" );
-OC_Util::addScript( 'core', 'multiselect' );
+OCP\Util::addStyle('settings', 'settings');
+OCP\Util::addScript('settings', 'settings');
+OCP\Util::addScript( "settings", "admin" );
+OCP\Util::addScript( "settings", "log" );
+OCP\Util::addScript( 'core', 'multiselect' );
+OCP\Util::addScript('core', 'select2/select2');
+OCP\Util::addStyle('core', 'select2/select2');
+OCP\Util::addScript('core', 'setupchecks');
 OC_App::setActiveNavigationEntry( "admin" );
 
 $tmpl = new OC_Template( 'settings', 'admin', 'user');
@@ -38,11 +42,9 @@ $tmpl->assign('mail_smtppassword', OC_Config::getValue( "mail_smtppassword", '' 
 $tmpl->assign('entries', $entries);
 $tmpl->assign('entriesremain', $entriesremain);
 $tmpl->assign('htaccessworking', $htaccessworking);
-$tmpl->assign('internetconnectionworking', OC_Util::isInternetConnectionEnabled() ? OC_Util::isInternetConnectionWorking() : 'disabled');
 $tmpl->assign('isLocaleWorking', OC_Util::isSetLocaleWorking());
 $tmpl->assign('isPhpCharSetUtf8', OC_Util::isPhpCharSetUtf8());
 $tmpl->assign('isAnnotationsWorking', OC_Util::isAnnotationsWorking());
-$tmpl->assign('isWebDavWorking', OC_Util::isWebDAVWorking());
 $tmpl->assign('has_fileinfo', OC_Util::fileInfoLoaded());
 $tmpl->assign('old_php', OC_Util::isPHPoutdated());
 $tmpl->assign('backgroundjobs_mode', OC_Appconfig::getValue('core', 'backgroundjobs_mode', 'ajax'));
@@ -54,22 +56,9 @@ $tmpl->assign('shareExpireAfterNDays', OC_Appconfig::getValue('core', 'shareapi_
 $tmpl->assign('shareEnforceExpireDate', OC_Appconfig::getValue('core', 'shareapi_enforce_expire_date', 'no'));
 $excludeGroups = OC_Appconfig::getValue('core', 'shareapi_exclude_groups', 'no') === 'yes' ? true : false;
 $tmpl->assign('shareExcludeGroups', $excludeGroups);
-$allGroups =  OC_Group::getGroups();
 $excludedGroupsList = OC_Appconfig::getValue('core', 'shareapi_exclude_groups_list', '');
-$excludedGroups = $excludedGroupsList !== '' ? explode(',', $excludedGroupsList) : array();
-$groups = array();
-foreach ($allGroups as $group) {
-	if (in_array($group, $excludedGroups)) {
-		$groups[$group] = array('gid' => $group,
-			'excluded' => true);
-	} else {
-		$groups[$group] = array('gid' => $group,
-			'excluded' => false);
-	}
-}
-ksort($groups);
-$tmpl->assign('groups', $groups);
-
+$excludedGroupsList = explode(',', $excludedGroupsList); // FIXME: this should be JSON!
+$tmpl->assign('shareExcludedGroupsList', implode('|', $excludedGroupsList));
 
 // Check if connected using HTTPS
 $tmpl->assign('isConnectedViaHTTPS', OC_Request::serverProtocol() === 'https');

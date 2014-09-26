@@ -140,7 +140,6 @@ $TRANSLATIONS = array(
 "Error favoriting" => "Σφάλμα προσθήκης στα αγαπημένα",
 "Error unfavoriting" => "Σφάλμα αφαίρεσης από τα αγαπημένα",
 "Access forbidden" => "Δεν επιτρέπεται η πρόσβαση",
-"Cloud not found" => "Δεν βρέθηκε νέφος",
 "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" => "Γειά χαρά,\n\nαπλά σας ενημερώνω πως ο %s μοιράστηκε το %s με εσάς.\nΔείτε το: %s\n\n",
 "The share will expire on %s." => "Ο διαμοιρασμός θα λήξει σε %s.",
 "Cheers!" => "Χαιρετισμούς!",
@@ -163,6 +162,7 @@ $TRANSLATIONS = array(
 "SQLite will be used as database. For larger installations we recommend to change this." => "Η SQLIte θα χρησιμοποιηθεί ως βάση δεδομένων. Για μεγαλύτερες εγκαταστάσεις σας συνιστούμε να το αλλάξετε.",
 "Finish setup" => "Ολοκλήρωση εγκατάστασης",
 "Finishing …" => "Ολοκλήρωση...",
+"This application requires JavaScript for correct operation. Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable JavaScript</a> and reload the page." => "Αυτή η εφαρμογή απαιτεί JavaScript για τη σωστή λειτουργία. Παρακαλώ  <a href=\"http://enable-javascript.com/\" target=\"_blank\">ενεργοποιήστε τη JavaScript</a> και επαναφορτώστε τη σελίδα.",
 "%s is available. Get more information on how to update." => "%s είναι διαθέσιμη. Δείτε περισσότερες πληροφορίες στο πώς να αναβαθμίσετε.",
 "Log out" => "Αποσύνδεση",
 "Server side authentication failed!" => "Η διαδικασία επικύρωσης απέτυχε από την πλευρά του διακομιστή!",
@@ -186,7 +186,7 @@ $TRANSLATIONS = array(
 "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." => "Παρακαλώ βεβαιωθείτε ότι έχουν ληψθεί αντίγραφα ασφαλείας της βάσης δεδομένων, του φακέλου ρυθμίσεων και του φακέλου δεδομένων πριν προχωρήσετε.",
 "Start update" => "Έναρξη ενημέρωσης",
 "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" => "Για να αποφύγετε τη λήξη χρόνου με μεγαλύτερες εγκαταστάσεις, μπορείτε αντί αυτού να τρέξετε την ακόλουθη εντολή από τον κατάλογο αρχείων εφαρμογών:",
-"This ownCloud instance is currently being updated, which may take a while." => "Αυτή η εγκατάσταση ownCloud ενημερώνεται, το οποίο μπορεί να πάρει κάποιο χρόνο.",
-"Please reload this page after a short time to continue using ownCloud." => "Παρακαλώ ανανεώστε αυτή τη σελίδα μετά από ένα σύντομο χρονικό διάστημα ώστε να συνεχίσετε να χρησιμοποιείτε το ownCloud."
+"This %s instance is currently being updated, which may take a while." => "Αυτή %s η εγκατάσταση είναι υπό ενημέρωση, η οποία μπορεί να πάρει κάποιο χρόνο.",
+"This page will refresh itself when the %s instance is available again." => "Αυτή η σελίδα θα ανανεωθεί από μόνη της όταν η %s εγκατάσταση είναι διαθέσιμη ξανά."
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

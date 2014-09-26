@@ -140,7 +140,6 @@ $TRANSLATIONS = array(
 "Error favoriting" => "Viga lemmikuks lisamisel",
 "Error unfavoriting" => "Viga lemmikutest eemaldamisel",
 "Access forbidden" => "Ligipääs on keelatud",
-"Cloud not found" => "Pilve ei leitud",
 "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" => "Tere,\n\n%s jagas sulle välja %s.\nVaata siit: %s\n\n",
 "The share will expire on %s." => "Jagamine aegub %s.",
 "Cheers!" => "Terekest!",
@@ -163,6 +162,7 @@ $TRANSLATIONS = array(
 "SQLite will be used as database. For larger installations we recommend to change this." => "Andmebaasina kasutatakse SQLite-t. Suuremate paigalduste puhul me soovitame seda muuta.",
 "Finish setup" => "Lõpeta seadistamine",
 "Finishing …" => "Lõpetamine ...",
+"This application requires JavaScript for correct operation. Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable JavaScript</a> and reload the page." => "See rakendus vajab toimimiseks JavaScripti. Palun <a href=\"http://enable-javascript.com/\" target=\"_blank\">luba JavaScript</a> ning laadi see leht uuesti.",
 "%s is available. Get more information on how to update." => "%s on saadaval. Vaata lähemalt kuidas uuendada.",
 "Log out" => "Logi välja",
 "Server side authentication failed!" => "Serveripoolne autentimine ebaõnnestus!",
@@ -185,8 +185,6 @@ $TRANSLATIONS = array(
 "The theme %s has been disabled." => "Teema %s on keelatud.",
 "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." => "Enne jätkamist veendu, et andmebaas, seadete ning andmete kataloog on varundatud.",
 "Start update" => "Käivita uuendus",
-"To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" => "Suurtel saitidel aegumise vältimiseks võid sa paigalduskaustas käivitada järgmise käsu:",
-"This ownCloud instance is currently being updated, which may take a while." => "Seda ownCloud instantsi hetkel uuendatakse, võib võtta veidi aega.",
-"Please reload this page after a short time to continue using ownCloud." => "Palun laadi see leht uuesti veidi aja pärast jätkamaks ownCloud kasutamist."
+"To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" => "Suurtel saitidel aegumise vältimiseks võid sa paigalduskaustas käivitada järgmise käsu:"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

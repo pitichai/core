@@ -137,7 +137,6 @@ $TRANSLATIONS = array(
 "Error favoriting" => "Fel favorisering",
 "Error unfavoriting" => "Fel av favorisering ",
 "Access forbidden" => "Åtkomst förbjuden",
-"Cloud not found" => "Hittade inget moln",
 "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" => "Hej där!,\n\nVi vill bara meddela att %s delade %s med dig.\nTitta på den här: %s\n\n",
 "The share will expire on %s." => "Utdelningen kommer att upphöra %s.",
 "Cheers!" => "Ha de fint!",
@@ -179,8 +178,6 @@ $TRANSLATIONS = array(
 "The following apps will be disabled:" => "Följande appar kommer att inaktiveras:",
 "The theme %s has been disabled." => "Temat  %s har blivit inaktiverat.",
 "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." => "Vänligen säkerställ att en säkerhetskopia har gjorts av databasen, konfigurations- och datamappen innan du fortsätter.",
-"Start update" => "Starta uppdateringen",
-"This ownCloud instance is currently being updated, which may take a while." => "Denna ownCloud instans håller på att uppdatera, vilket kan ta ett tag.",
-"Please reload this page after a short time to continue using ownCloud." => "Var god och ladda om denna sida efter en kort stund för att fortsätta använda ownCloud."
+"Start update" => "Starta uppdateringen"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

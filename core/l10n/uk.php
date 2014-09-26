@@ -117,7 +117,6 @@ $TRANSLATIONS = array(
 "Error favoriting" => "Помилка позначення улюблених",
 "Error unfavoriting" => "Помилка зняття позначки улюблених",
 "Access forbidden" => "Доступ заборонено",
-"Cloud not found" => "Cloud не знайдено",
 "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" => "Агов,\n\nпросто щоб ви знали, що %s поділився %s з вами.\nПодивіться: %s\n\n",
 "The share will expire on %s." => "Доступ до спільних даних вичерпається %s.",
 "Cheers!" => "Будьмо!",
@@ -148,8 +147,6 @@ $TRANSLATIONS = array(
 "This ownCloud instance is currently in single user mode." => "Цей екземпляр OwnCloud зараз працює в монопольному режимі одного користувача",
 "This means only administrators can use the instance." => "Це означає, що лише адміністратори можуть використовувати цей екземпляр.",
 "Contact your system administrator if this message persists or appeared unexpectedly." => "Зверніться до системного адміністратора, якщо це повідомлення зберігається або з'являєтья несподівано.",
-"Thank you for your patience." => "Дякуємо за ваше терпіння.",
-"This ownCloud instance is currently being updated, which may take a while." => "Цей ownCloud зараз оновлюється, це може тривати певний час.",
-"Please reload this page after a short time to continue using ownCloud." => "Будь ласка, перезавантажте незабаром цю сторінку, щоб продовжити користуватися OwnCloud."
+"Thank you for your patience." => "Дякуємо за ваше терпіння."
 );
 $PLURAL_FORMS = "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);";

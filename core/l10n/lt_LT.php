@@ -111,7 +111,6 @@ $TRANSLATIONS = array(
 "Error favoriting" => "Klaida įtraukiant į mėgstamus.",
 "Error unfavoriting" => "Klaida pašalinant iš mėgstamų.",
 "Access forbidden" => "Priėjimas draudžiamas",
-"Cloud not found" => "Negalima rasti",
 "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" => "Labas,\n\nInformuojame, kad %s pasidalino su Jumis %s.\nPažiūrėti tai: %s\n",
 "The share will expire on %s." => "Bendrinimo laikas baigsis %s.",
 "Cheers!" => "Sveikinimai!",
@@ -141,8 +140,6 @@ $TRANSLATIONS = array(
 "This ownCloud instance is currently in single user mode." => "Ši ownCloud sistema yra vieno naudotojo veiksenoje.",
 "This means only administrators can use the instance." => "Tai reiškia, kad tik administratorius gali naudotis sistema.",
 "Contact your system administrator if this message persists or appeared unexpectedly." => "Susisiekite su savo sistemos administratoriumi jei šis pranešimas nedingsta arba jei jis pasirodė netikėtai.",
-"Thank you for your patience." => "Dėkojame už jūsų kantrumą.",
-"This ownCloud instance is currently being updated, which may take a while." => "Šiuo metu vyksta ownCloud atnaujinamas, tai gali šiek tiek užtrukti.",
-"Please reload this page after a short time to continue using ownCloud." => "Po trupučio laiko atnaujinkite šį puslapį kad galėtumėte toliau naudoti ownCloud."
+"Thank you for your patience." => "Dėkojame už jūsų kantrumą."
 );
 $PLURAL_FORMS = "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);";

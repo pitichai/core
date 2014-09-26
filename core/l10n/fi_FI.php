@@ -139,7 +139,9 @@ $TRANSLATIONS = array(
 "Error favoriting" => "Suosituksen kirjoitusvirhe",
 "Error unfavoriting" => "Suosituksen poisto virhe",
 "Access forbidden" => "Pääsy estetty",
-"Cloud not found" => "Pilveä ei löydy",
+"File not found" => "Tiedostoa ei löytynyt",
+"The specified document has not been found on the server." => "Määritettyä asiakirjaa ei löytynyt palvelimelta.",
+"You can click here to return to %s." => "Napsauta tästä palataksesi %siin.",
 "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" => "Hei sinä!\n\n%s jakoi kohteen %s kanssasi.\nTutustu siihen: %s\n\n",
 "The share will expire on %s." => "Jakaminen päättyy %s.",
 "Cheers!" => "Kippis!",
@@ -162,6 +164,7 @@ $TRANSLATIONS = array(
 "SQLite will be used as database. For larger installations we recommend to change this." => "SQLitea käytetään tietokantana. Laajoja asennuksia varten tämä asetus kannattaa muuttaa. ",
 "Finish setup" => "Viimeistele asennus",
 "Finishing …" => "Valmistellaan…",
+"This application requires JavaScript for correct operation. Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable JavaScript</a> and reload the page." => "Tämä sovellus vaatii JavaScript-tuen toimiakseen. <a href=\"http://enable-javascript.com/\" target=\"_blank\">Ota JavaScript käyttöön</a> ja päivitä sivu.",
 "%s is available. Get more information on how to update." => "%s on saatavilla. Lue lisätietoja, miten päivitys asennetaan.",
 "Log out" => "Kirjaudu ulos",
 "Server side authentication failed!" => "Palvelimen puoleinen tunnistautuminen epäonnistui!",
@@ -185,7 +188,7 @@ $TRANSLATIONS = array(
 "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." => "Varmista ennen jatkamista, että tietokanta, asetuskansio ja datakansio on varmuuskopioitu.",
 "Start update" => "Käynnistä päivitys",
 "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" => "Välttääksesi aikakatkaisuja suurikokoisten asennusten kanssa, voit suorittaa vaihtoehtoisesti seuraavan komennon asennushakemistossa:",
-"This ownCloud instance is currently being updated, which may take a while." => "Tätä ownCloud-asennusta päivitetään parhaillaan, siinä saattaa kestää hetki.",
-"Please reload this page after a short time to continue using ownCloud." => "Päivitä tämä sivu hetken kuluttua jatkaaksesi ownCloudin käyttämistä."
+"This %s instance is currently being updated, which may take a while." => "Tätä %s-asennusta päivitetään parhaillaan, päivityksessä saattaa kestää hetki.",
+"This page will refresh itself when the %s instance is available again." => "Tämä sivu päivittää itsensä, kun %s on jälleen käytettävissä."
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

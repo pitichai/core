@@ -140,7 +140,9 @@ $TRANSLATIONS = array(
 "Error favoriting" => "Error favouriting",
 "Error unfavoriting" => "Error unfavouriting",
 "Access forbidden" => "Access denied",
-"Cloud not found" => "Cloud not found",
+"File not found" => "File not found",
+"The specified document has not been found on the server." => "The specified document has not been found on the server.",
+"You can click here to return to %s." => "You can click here to return to %s.",
 "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" => "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n",
 "The share will expire on %s." => "The share will expire on %s.",
 "Cheers!" => "Cheers!",
@@ -163,6 +165,7 @@ $TRANSLATIONS = array(
 "SQLite will be used as database. For larger installations we recommend to change this." => "SQLite will be used as database. For larger installations we recommend changing this.",
 "Finish setup" => "Finish setup",
 "Finishing …" => "Finishing …",
+"This application requires JavaScript for correct operation. Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable JavaScript</a> and reload the page." => "This application requires JavaScript for correct operation. Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable JavaScript</a> and reload the page.",
 "%s is available. Get more information on how to update." => "%s is available. Get more information on how to update.",
 "Log out" => "Log out",
 "Server side authentication failed!" => "Server side authentication failed!",
@@ -186,7 +189,7 @@ $TRANSLATIONS = array(
 "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." => "Please make sure that the database, the config folder and the data folder have been backed up before proceeding.",
 "Start update" => "Start update",
 "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" => "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:",
-"This ownCloud instance is currently being updated, which may take a while." => "This ownCloud instance is currently being updated, which may take a while.",
-"Please reload this page after a short time to continue using ownCloud." => "Please reload this page after a short time to continue using ownCloud."
+"This %s instance is currently being updated, which may take a while." => "This %s instance is currently being updated, which may take a while.",
+"This page will refresh itself when the %s instance is available again." => "This page will refresh itself when the %s instance is available again."
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

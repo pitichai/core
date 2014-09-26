@@ -1,5 +1,6 @@
 <?php
 $TRANSLATIONS = array(
+"See %s" => "Vidi %s",
 "Help" => "Helpo",
 "Personal" => "Persona",
 "Settings" => "Agordo",
@@ -29,8 +30,6 @@ $TRANSLATIONS = array(
 "PostgreSQL username and/or password not valid" => "La uzantonomo de PostgreSQL aŭ la pasvorto ne validas",
 "Set an admin username." => "Starigi administran uzantonomon.",
 "Set an admin password." => "Starigi administran pasvorton.",
-"Your web server is not yet properly setup to allow files synchronization because the WebDAV interface seems to be broken." => "Via TTT-servilo ankoraŭ ne ĝuste agordiĝis por permesi sinkronigi dosierojn ĉar la WebDAV-interfaco ŝajnas rompita.",
-"Please double check the <a href='%s'>installation guides</a>." => "Bonvolu duoble kontroli la <a href='%s'>gvidilon por instalo</a>.",
 "%s shared »%s« with you" => "%s kunhavigis “%s” kun vi",
 "You are not allowed to share %s" => "Vi ne permesatas kunhavigi %s",
 "Could not find category \"%s\"" => "Ne troviĝis kategorio “%s”",
@@ -47,6 +46,10 @@ $TRANSLATIONS = array(
 "Only the following characters are allowed in a username: \"a-z\", \"A-Z\", \"0-9\", and \"_.@-\"" => "Nur la jenaj signoj permesatas en uzantonomo: «a-z», «A-Z», «0-9» kaj «_.@-»",
 "A valid username must be provided" => "Valida uzantonomo devas proviziĝi",
 "A valid password must be provided" => "Valida pasvorto devas proviziĝi",
-"The username is already being used" => "La uzantonomo jam uzatas"
+"The username is already being used" => "La uzantonomo jam uzatas",
+"Please ask your server administrator to install the module." => "Bonvolu peti vian sistemadministranton, ke ĝi instalu la modulon.",
+"PHP module %s not installed." => "La PHP-modulo %s ne instalitas.",
+"PHP %s or higher is required." => "PHP %s aŭ pli alta necesas.",
+"PostgreSQL >= 9 required" => "PostgreSQL >= 9 necesas"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

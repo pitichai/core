@@ -140,7 +140,9 @@ $TRANSLATIONS = array(
 "Error favoriting" => "Erro colocando nos favoritos",
 "Error unfavoriting" => "Erro retirando do favoritos",
 "Access forbidden" => "Acesso proibido",
-"Cloud not found" => "Cloud não encontrado",
+"File not found" => "Arquivo não encontrado",
+"The specified document has not been found on the server." => "O documento especificado não foi encontrado no servidor.",
+"You can click here to return to %s." => "Você pode clicar aqui para retornar para %s.",
 "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" => "Olá,\n\ngostaria que você soubesse que %s compartilhou %s com você.\nVeja isto: %s\n\n",
 "The share will expire on %s." => "O compartilhamento irá expirar em %s.",
 "Cheers!" => "Saúde!",
@@ -163,6 +165,7 @@ $TRANSLATIONS = array(
 "SQLite will be used as database. For larger installations we recommend to change this." => "O SQLite será usado como banco de dados. Para grandes instalações nós recomendamos mudar isto.",
 "Finish setup" => "Concluir configuração",
 "Finishing …" => "Finalizando ...",
+"This application requires JavaScript for correct operation. Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable JavaScript</a> and reload the page." => "Esta aplicação requer JavaScript para sua correta operação. Por favor <a href=\"http://enable-javascript.com/\" target=\"_blank\">habilite JavaScript</a> e recerregue a página.",
 "%s is available. Get more information on how to update." => "%s está disponível. Obtenha mais informações sobre como atualizar.",
 "Log out" => "Sair",
 "Server side authentication failed!" => "Autenticação do servidor falhou!",
@@ -186,7 +189,7 @@ $TRANSLATIONS = array(
 "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." => "Por favor, certifique-se de que o banco de dados, a pasta config e a pasta de dados foram copiados antes de prosseguir.",
 "Start update" => "Iniciar atualização",
 "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" => "Para evitar tempos de espera com instalações maiores, você pode em vez disso executar o seguinte comando a partir do diretório de instalação:",
-"This ownCloud instance is currently being updated, which may take a while." => "Esta instância do ownCloud está sendo atualizada, o que pode demorar um pouco.",
-"Please reload this page after a short time to continue using ownCloud." => "Por favor, atualize esta página depois de um curto período de tempo para continuar usando ownCloud."
+"This %s instance is currently being updated, which may take a while." => "Esta instância %s está sendo atualizada, o que pode demorar um pouco.",
+"This page will refresh itself when the %s instance is available again." => "Esta página será atualizada automaticamente quando esta instância %s estiver disponível novamente."
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n > 1);";

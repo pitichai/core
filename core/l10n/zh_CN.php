@@ -138,7 +138,6 @@ $TRANSLATIONS = array(
 "Error favoriting" => "收藏时出错",
 "Error unfavoriting" => "删除收藏时出错",
 "Access forbidden" => "访问禁止",
-"Cloud not found" => "未找到云",
 "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" => "嗨、你好,\n\n只想让你知道 %s 分享了 %s 给你。\n现在查看: %s\n",
 "The share will expire on %s." => "此分享将在 %s 过期。",
 "Cheers!" => "干杯！",
@@ -179,8 +178,6 @@ $TRANSLATIONS = array(
 "The following apps will be disabled:" => "以下应用将会被禁用：",
 "The theme %s has been disabled." => "%s 主题已被禁用。",
 "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." => "在继续之前，请确认数据库、配置文件夹和数据文件夹已经备份。",
-"Start update" => "开始更新",
-"This ownCloud instance is currently being updated, which may take a while." => "当前ownCloud实例正在更新，可能需要一段时间。",
-"Please reload this page after a short time to continue using ownCloud." => "请稍后重新加载这个页面，以继续使用ownCloud。"
+"Start update" => "开始更新"
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";

@@ -138,7 +138,6 @@ $TRANSLATIONS = array(
 "Error favoriting" => "Produciuse un erro ao marcar como favorito",
 "Error unfavoriting" => "Produciuse un erro ao desmarcar como favorito",
 "Access forbidden" => "Acceso denegado",
-"Cloud not found" => "Nube non atopada",
 "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" => "Ola,\n\nsó facerlle saber que %s compartiu %s con vostede.\nVéxao en: %s\n\n",
 "The share will expire on %s." => "Esta compartición caduca o %s.",
 "Cheers!" => "Saúdos!",
@@ -181,8 +180,6 @@ $TRANSLATIONS = array(
 "The theme %s has been disabled." => "O tema %s foi desactivado.",
 "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." => "Asegúrese de ter feito unha copia de seguranza da base de datos, do cartafol de configuración e do cartafol de datos, antes de proceder.",
 "Start update" => "Iniciar a actualización",
-"To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" => "Para evitar tempos de espera nas instalacións grandes, no seu lugar pode executar a seguinte orde desde o directorio de instalación:",
-"This ownCloud instance is currently being updated, which may take a while." => "Esta instancia do ownCloud está actualizandose neste momento, pode levarlle un chisco.",
-"Please reload this page after a short time to continue using ownCloud." => "Volva cargar a páxina de aquí a pouco para para continuar co ownCloud."
+"To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" => "Para evitar tempos de espera nas instalacións grandes, no seu lugar pode executar a seguinte orde desde o directorio de instalación:"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

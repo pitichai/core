@@ -160,7 +160,7 @@ $CONFIG = array(
 /* allow user to change his display name, if it is supported by the back-end */
 'allow_user_to_change_display_name' => true,
 
-/* Check 3rdparty apps for malicious code fragments */
+/* Ensure that 3rdparty applications follows coding guidelines */
 "appcodechecker" => true,
 
 /* Check if ownCloud is up to date */
@@ -282,7 +282,30 @@ $CONFIG = array(
 /* custom path for libreoffice / openoffice binary */
 'preview_libreoffice_path' => '/usr/bin/libreoffice',
 /* cl parameters for libreoffice / openoffice */
-'preview_office_cl_parameters' => '',
+'preview_office_cl_parameters' => ' --headless --nologo --nofirststartwizard --invisible --norestore -convert-to pdf -outdir ',
+
+/**
+ * Only register providers that have been explicitly enabled
+ *
+ * The following providers are enabled by default:
+ *  - OC\Preview\Image
+ *  - OC\Preview\MP3
+ *  - OC\Preview\TXT
+ *  - OC\Preview\MarkDown
+ *
+ * The following providers are disabled by default due to performance or privacy concerns:
+ *  - OC\Preview\Office
+ *  - OC\Preview\SVG
+ *  - OC\Preview\Movies
+ *  - OC\Preview\PDF
+ *  - OC\Preview\Tiff
+ */
+'enabledPreviewProviders' => array(
+	'OC\Preview\Image',
+	'OC\Preview\MP3',
+	'OC\Preview\TXT',
+	'OC\Preview\MarkDown'
+),
 
 /* whether avatars should be enabled */
 'enable_avatars' => true,

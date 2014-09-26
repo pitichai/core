@@ -140,7 +140,6 @@ $TRANSLATIONS = array(
 "Error favoriting" => "Error en posar a preferits",
 "Error unfavoriting" => "Error en treure de preferits",
 "Access forbidden" => "Accés prohibit",
-"Cloud not found" => "No s'ha trobat el núvol",
 "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" => "Ei,\n\nnomés fer-te saber que %s ha compartit %s amb tu.\nMira-ho a: %s\n\n",
 "The share will expire on %s." => "La compartició venç el %s.",
 "Cheers!" => "Salut!",
@@ -163,6 +162,7 @@ $TRANSLATIONS = array(
 "SQLite will be used as database. For larger installations we recommend to change this." => "S'utilitzarà SQLite com a base de dades. Per instal·lacions grans recomanem que la canvieu.",
 "Finish setup" => "Acaba la configuració",
 "Finishing …" => "Acabant...",
+"This application requires JavaScript for correct operation. Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable JavaScript</a> and reload the page." => "Aquesta aplicació requereix JavaScrip pel seu correcte funcionament. Si us plau <a href=\"http://enable-javascript.com/\" target=\"_blank\">Activeu JavaScript</a> i actualitzeu la pàgina.",
 "%s is available. Get more information on how to update." => "%s està disponible. Obtingueu més informació de com actualitzar.",
 "Log out" => "Surt",
 "Server side authentication failed!" => "L'autenticació del servidor ha fallat!",
@@ -185,8 +185,6 @@ $TRANSLATIONS = array(
 "The theme %s has been disabled." => "S'ha desactivat el tema %s",
 "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." => "Assegureu-vos que heu fet una còpia de seguretat de la base de dades, del fitxer de configuració i de la carpeta de dades abans de continuar.",
 "Start update" => "Inicia l'actualització",
-"To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" => "Per evitar que s'esgoti el temps d'espera en instalacions grans, pots en el seu lloc fer córrer la següent comanda en el directori d'instalació. ",
-"This ownCloud instance is currently being updated, which may take a while." => "Aquesta instància d'ownCloud s'està actualitzant i podria trigar una estona.",
-"Please reload this page after a short time to continue using ownCloud." => "Carregueu de nou aquesta pàgina d'aquí a poc temps per continuar usant ownCloud."
+"To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" => "Per evitar que s'esgoti el temps d'espera en instalacions grans, pots en el seu lloc fer córrer la següent comanda en el directori d'instalació. "
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

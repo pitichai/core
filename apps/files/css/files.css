@@ -316,7 +316,14 @@ table td.filename .nametext .innernametext {
 
 table td.filename .uploadtext {
 	font-weight: normal;
-	margin-left: 8px;
+	margin-left: 55px;
+	margin-top: 5px;
+	height: 20px;
+	padding: 10px 0;
+	font-size: 11px;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: alpha(opacity=50);
+	opacity: .5;
 }
 
 .ie8 input[type="checkbox"]{
@@ -391,6 +398,15 @@ table td.filename .uploadtext {
 	position: absolute;
 	right: 0;
 	font-size: 11px;
+}
+
+
+/* force show the loading icon, not only on hover */
+#fileList .icon-loading-small {
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	filter:alpha(opacity=100);
+	opacity: 1 !important;
+	display: inline !important;
 }
 
 #fileList img.move2trash { display:inline; margin:-8px 0; padding:16px 8px 16px 8px !important; float:right; }

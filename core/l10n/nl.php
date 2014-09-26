@@ -140,7 +140,9 @@ $TRANSLATIONS = array(
 "Error favoriting" => "Fout bij favoriet maken",
 "Error unfavoriting" => "Fout bij verwijderen favorietstatus",
 "Access forbidden" => "Toegang verboden",
-"Cloud not found" => "Cloud niet gevonden",
+"File not found" => "Bestand niet gevonden",
+"The specified document has not been found on the server." => "Het opgegeven document is niet gevonden op deze server.",
+"You can click here to return to %s." => "Klik hier om terug te keren naar %s.",
 "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" => "Hallo,\n\n%s deelt %s met u.\nBekijk het hier: %s\n\n",
 "The share will expire on %s." => "De share vervalt op %s.",
 "Cheers!" => "Proficiat!",
@@ -163,6 +165,7 @@ $TRANSLATIONS = array(
 "SQLite will be used as database. For larger installations we recommend to change this." => "SQLite wordt gebruikt als database. Voor grotere installaties adviseren we dit te veranderen.",
 "Finish setup" => "Installatie afronden",
 "Finishing …" => "Afronden ...",
+"This application requires JavaScript for correct operation. Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable JavaScript</a> and reload the page." => "Deze applicatie heeft JavaScript nodig. <a href=\"http://enable-javascript.com/\" target=\"_blank\">Activeer JavaScript</a> en herlaad deze interface.",
 "%s is available. Get more information on how to update." => "%s is beschikbaar. Verkrijg meer informatie over het bijwerken.",
 "Log out" => "Afmelden",
 "Server side authentication failed!" => "Authenticatie bij de server mislukte!",
@@ -186,7 +189,7 @@ $TRANSLATIONS = array(
 "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." => "Let erop dat de database, de config map en de data map zijn gebackupped voordat u verder gaat.",
 "Start update" => "Begin de update",
 "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" => "Om time-outs tijdens grotere installaties te voorkomen, kunt u in plaats hiervan de volgende opdracht geven vanaf uw installatiedirectory:",
-"This ownCloud instance is currently being updated, which may take a while." => "Deze ownCloud dienst wordt nu bijgewerkt, dat kan even duren.",
-"Please reload this page after a short time to continue using ownCloud." => "Laad deze pagina straks opnieuw om verder te gaan met ownCloud."
+"This %s instance is currently being updated, which may take a while." => "Deze %s-installatie wordt momenteel geüpdatet. Dat kan enige tijd duren.",
+"This page will refresh itself when the %s instance is available again." => "Deze pagina wordt ververst als de %s-installatie weer beschikbaar is."
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

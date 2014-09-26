@@ -42,8 +42,9 @@ body {
 	position: fixed;
 	top: 0;
 	bottom: 0;
-	z-index: 9000;
+	height: 100%;
 	width: 100%;
+	z-index: 9000;
 	text-align: center;
 	background-color: rgba(0,0,0,0.5);
 	color: #fff;
@@ -137,6 +138,18 @@ input[type="time"] {
 	width: initial;
 	height: 31px;
 	-moz-box-sizing: border-box; box-sizing: border-box;
+}
+
+.select2-choices {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	color: #333;
+	background-image: none;
+}
+.select2-dropdown-open .select2-choices {
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	border: 1px solid #3875d7;
 }
 
 /* correctly align images inside of buttons */
@@ -678,6 +691,7 @@ label.infield {
 #body-login .wrapper {
 	min-height: 100%;
 	margin: 0 auto -70px;
+	width: 300px;
 }
 #body-login footer, #body-login .push {
 	height: 70px;
@@ -701,7 +715,7 @@ label.infield {
 #notification, #update-notification {
 	margin: 0 auto;
 	max-width: 60%;
-	z-index: 101;
+	z-index: 8000;
 	background-color: #fc4;
 	border: 0;
 	padding: 1px 8px;
@@ -770,6 +784,8 @@ a.bookmarklet { background-color:#ddd; border:1px solid #ccc; padding:5px;paddin
 	background-image:url('../img/places/home.svg');
 	background-repeat:no-repeat;
 	background-position: left center;
+	width: 26px;
+	display: inline-block;
 }
 #oc-dialog-filepicker-content .dirtree span:not(:last-child) { cursor: pointer; }
 #oc-dialog-filepicker-content .dirtree span:last-child { font-weight: bold; }
@@ -809,6 +825,16 @@ span.ui-icon {float: left; margin: 3px 7px 30px 0;}
 .move2trash { /* decrease spinner size */
 	width: 16px;
 	height: 16px;
+}
+
+/* ---- TOOLTIPS ---- */
+.extra-data {
+	padding-right: 5px !important;
+}
+.tipsy-inner {
+	max-width: 400px !important;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 /* ---- TAGS ---- */
@@ -872,6 +898,11 @@ div.crumb:first-child a {
 div.crumb.last {
 	font-weight: bold;
 	margin-right: 10px;
+}
+div.crumb a.ellipsislink {
+	padding: 0 !important;
+	position: relative;
+	top: 8px !important;
 }
 
 /* some feedback for hover/tap on breadcrumbs */

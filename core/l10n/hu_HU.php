@@ -140,7 +140,6 @@ $TRANSLATIONS = array(
 "Error favoriting" => "Hiba a kedvencekhez adáskor",
 "Error unfavoriting" => "Hiba a kedvencekből törléskor",
 "Access forbidden" => "A hozzáférés nem engedélyezett",
-"Cloud not found" => "A felhő nem található",
 "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" => "Üdv!\\n\n\\n\nÉrtesítjük, hogy %s megosztotta Önnel a következőt: %s.\\n\nItt lehet megnézni: %s\\n\n\\n",
 "The share will expire on %s." => "A megosztás lejár ekkor %s",
 "Cheers!" => "Üdv.",
@@ -185,8 +184,6 @@ $TRANSLATIONS = array(
 "The theme %s has been disabled." => "Ez a smink: %s letiltásra került.",
 "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." => "Kérjük gondoskodjon róla, hogy elmentse az adatbázist, a konfigurációs mappa és az adatamappa tartalmát, mielőtt folytatja.",
 "Start update" => "A frissítés megkezdése",
-"To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" => "Nagyobb telepítések esetén úgy kerülhetők el az időtúllépések, ha inkább a következő parancsot adja ki a telepítési alkönyvtárban:",
-"This ownCloud instance is currently being updated, which may take a while." => "Az ownCloud frissítés elkezdődött, ez eltarthat egy ideig.",
-"Please reload this page after a short time to continue using ownCloud." => "Frissitse az oldalt egy kis idő múlva, ha folytatni kívánja az ownCloud használatát."
+"To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" => "Nagyobb telepítések esetén úgy kerülhetők el az időtúllépések, ha inkább a következő parancsot adja ki a telepítési alkönyvtárban:"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

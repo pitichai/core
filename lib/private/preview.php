@@ -13,8 +13,8 @@
  */
 namespace OC;
 
-use OC\Files\Filesystem;
 use OC\Preview\Provider;
+use OCP\Files\NotFoundException;
 
 require_once 'preview/image.php';
 require_once 'preview/movies.php';
@@ -22,7 +22,6 @@ require_once 'preview/mp3.php';
 require_once 'preview/pdf.php';
 require_once 'preview/svg.php';
 require_once 'preview/txt.php';
-require_once 'preview/unknown.php';
 require_once 'preview/office.php';
 require_once 'preview/tiff.php';
 
@@ -61,6 +60,7 @@ class Preview {
 	//preview providers
 	static private $providers = array();
 	static private $registeredProviders = array();
+	static private $enabledProviders = array();
 
 	/**
 	 * @var \OCP\Files\FileInfo
@@ -322,7 +322,7 @@ class Preview {
 		if($fileInfo !== null && $fileInfo !== false) {
 			$fileId = $fileInfo->getId();
 
-			$previewPath = $this->getThumbnailsFolder() . '/' . $fileId . '/';
+			$previewPath = $this->getPreviewPath($fileId);
 			$this->userView->deleteAll($previewPath);
 			return $this->userView->rmdir($previewPath);
 		}
@@ -392,7 +392,7 @@ class Preview {
 			return array();
 		}
 
-		$previewPath = $this->getThumbnailsFolder() . '/' . $fileId . '/';
+		$previewPath = $this->getPreviewPath($fileId);
 
 		$wantedAspectRatio = (float) ($this->getMaxX() / $this->getMaxY());
 
@@ -509,7 +509,7 @@ class Preview {
 				$this->preview = $preview;
 				$this->resizeAndCrop();
 
-				$previewPath = $this->getThumbnailsFolder() . '/' . $fileId . '/';
+				$previewPath = $this->getPreviewPath($fileId);
 				$cachePath = $this->buildCachePath($fileId);
 
 				if ($this->userView->is_dir($this->getThumbnailsFolder() . '/') === false) {
@@ -534,15 +534,22 @@ class Preview {
 	}
 
 	/**
-	 * show preview
-	 * @return void
+	 * @param null|string $mimeType
+	 * @throws NotFoundException
 	 */
 	public function showPreview($mimeType = null) {
+		// Check if file is valid
+		if($this->isFileValid() === false) {
+			throw new NotFoundException('File not found.');
+		}
+
 		\OCP\Response::enableCaching(3600 * 24); // 24 hours
 		if (is_null($this->preview)) {
 			$this->getPreview();
 		}
-		$this->preview->show($mimeType);
+		if ($this->preview instanceof \OC_Image) {
+			$this->preview->show($mimeType);
+		}
 	}
 
 	/**
@@ -560,8 +567,6 @@ class Preview {
 			\OC_Log::write('core', '$this->preview is not an instance of OC_Image', \OC_Log::DEBUG);
 			return;
 		}
-
-		$image->fixOrientation();
 
 		$realX = (int)$image->width();
 		$realY = (int)$image->height();
@@ -663,12 +668,39 @@ class Preview {
 	}
 
 	/**
-	 * register a new preview provider to be used
+	 * Register a new preview provider to be used
+	 * @param $class
 	 * @param array $options
-	 * @return void
 	 */
 	public static function registerProvider($class, $options = array()) {
-		self::$registeredProviders[] = array('class' => $class, 'options' => $options);
+		/**
+		 * Only register providers that have been explicitly enabled
+		 *
+		 * The following providers are enabled by default:
+		 *  - OC\Preview\Image
+		 *  - OC\Preview\MP3
+		 *  - OC\Preview\TXT
+		 *  - OC\Preview\MarkDown
+		 *
+		 * The following providers are disabled by default due to performance or privacy concerns:
+		 *  - OC\Preview\Office
+		 *  - OC\Preview\SVG
+		 *  - OC\Preview\Movies
+		 *  - OC\Preview\PDF
+		 *  - OC\Preview\Tiff
+		 */
+		if(empty(self::$enabledProviders)) {
+			self::$enabledProviders = \OC::$server->getConfig()->getSystemValue('enabledPreviewProviders', array(
+				'OC\Preview\Image',
+				'OC\Preview\MP3',
+				'OC\Preview\TXT',
+				'OC\Preview\MarkDown',
+			));
+		}
+
+		if(in_array($class, self::$enabledProviders)) {
+			self::$registeredProviders[] = array('class' => $class, 'options' => $options);
+		}
 	}
 
 	/**
@@ -676,9 +708,8 @@ class Preview {
 	 * @return void
 	 */
 	private static function initProviders() {
-		if (!\OC_Config::getValue('enable_previews', true)) {
-			$provider = new Preview\Unknown(array());
-			self::$providers = array($provider->getMimeType() => $provider);
+		if (!\OC::$server->getConfig()->getSystemValue('enable_previews', true)) {
+			self::$providers = array();
 			return;
 		}
 
@@ -692,12 +723,12 @@ class Preview {
 
 			/** @var $object Provider */
 			$object = new $class($options);
-
 			self::$providers[$object->getMimeType()] = $object;
 		}
 
 		$keys = array_map('strlen', array_keys(self::$providers));
 		array_multisort($keys, SORT_DESC, self::$providers);
+
 	}
 
 	public static function post_write($args) {
@@ -752,9 +783,7 @@ class Preview {
 			self::initProviders();
 		}
 
-		//remove last element because it has the mimetype *
-		$providers = array_slice(self::$providers, 0, -1);
-		foreach ($providers as $supportedMimeType => $provider) {
+		foreach (self::$providers as $supportedMimeType => $provider) {
 			/**
 			 * @var \OC\Preview\Provider $provider
 			 */
@@ -797,12 +826,22 @@ class Preview {
 		$maxX = $this->getMaxX();
 		$maxY = $this->getMaxY();
 
-		$previewPath = $this->getThumbnailsFolder() . '/' . $fileId . '/';
-		$preview = $previewPath . $maxX . '-' . $maxY . '.png';
+		$previewPath = $this->getPreviewPath($fileId);
+		$preview = $previewPath . strval($maxX) . '-' . strval($maxY);
 		if ($this->keepAspect) {
-			$preview = $previewPath . $maxX . '-with-aspect.png';
-			return $preview;
+			$preview .= '-with-aspect';
 		}
+		$preview .= '.png';
+
 		return $preview;
+	}
+
+
+	/**
+	 * @param int $fileId
+	 * @return string
+	 */
+	private function getPreviewPath($fileId) {
+		return $this->getThumbnailsFolder() . '/' . $fileId . '/';
 	}
 }

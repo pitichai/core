@@ -111,7 +111,6 @@ $TRANSLATIONS = array(
 "Error favoriting" => "Error al marcar como favorito",
 "Error unfavoriting" => "Error al quitar como favorito",
 "Access forbidden" => "Acceso denegado",
-"Cloud not found" => "No se encuentra la nube",
 "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" => "Hola:\n\nTan solo queremos informarte que %s compartió %s contigo.\nMíralo aquí: %s\n\n",
 "The share will expire on %s." => "El objeto dejará de ser compartido el %s.",
 "Cheers!" => "¡Saludos!",
@@ -141,8 +140,6 @@ $TRANSLATIONS = array(
 "This ownCloud instance is currently in single user mode." => "Esta instalación de ownCloud se encuentra en modo de usuario único.",
 "This means only administrators can use the instance." => "Esto quiere decir que solo un administrador puede usarla.",
 "Contact your system administrator if this message persists or appeared unexpectedly." => "Contacte con su administrador de sistemas si este mensaje persiste o aparece de forma inesperada.",
-"Thank you for your patience." => "Gracias por su paciencia.",
-"This ownCloud instance is currently being updated, which may take a while." => "Esta versión de ownCloud se está actualizando, esto puede demorar un tiempo.",
-"Please reload this page after a short time to continue using ownCloud." => "Por favor, recargue esta instancia de onwcloud tras un corto periodo de tiempo y continue usándolo."
+"Thank you for your patience." => "Gracias por su paciencia."
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

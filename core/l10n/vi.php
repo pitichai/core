@@ -109,7 +109,6 @@ $TRANSLATIONS = array(
 "Error tagging" => "Lỗi gắn thẻ",
 "Error untagging" => "Lỗi không gắn thẻ",
 "Access forbidden" => "Truy cập bị cấm",
-"Cloud not found" => "Không tìm thấy Clound",
 "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" => "Xin chào,\n\nbáo cho bạn biết rằng %s đã chia sẽ %s với bạn.\nXem nó: %s\n\n",
 "The share will expire on %s." => "Chia sẻ này sẽ hết hiệu lực vào %s.",
 "Cheers!" => "Chúc mừng!",
@@ -139,8 +138,6 @@ $TRANSLATIONS = array(
 "This ownCloud instance is currently in single user mode." => "OwnCloud trong trường hợp này đang ở chế độ người dùng duy nhất.",
 "This means only administrators can use the instance." => "Điều này có nghĩa chỉ có người quản trị có thể sử dụng trong trường hợp này.",
 "Contact your system administrator if this message persists or appeared unexpectedly." => "Liên hệ với người quản trị nếu lỗi này vẫn tồn tại hoặc xuất hiện bất ngờ.",
-"Thank you for your patience." => "Cảm ơn sự kiên nhẫn của bạn.",
-"This ownCloud instance is currently being updated, which may take a while." => "Phiên bản ownCloud này hiện đang được cập nhật, có thể sẽ mất một ít thời gian.",
-"Please reload this page after a short time to continue using ownCloud." => "Xin vui lòng tải lại trang này để tiếp tục sử dụng ownCloud."
+"Thank you for your patience." => "Cảm ơn sự kiên nhẫn của bạn."
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";

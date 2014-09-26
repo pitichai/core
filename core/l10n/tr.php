@@ -140,7 +140,9 @@ $TRANSLATIONS = array(
 "Error favoriting" => "Beğenilirken hata",
 "Error unfavoriting" => "Beğeniden kaldırılırken hata",
 "Access forbidden" => "Erişim yasak",
-"Cloud not found" => "Bulut bulunamadı",
+"File not found" => "Dosya bulunamadı",
+"The specified document has not been found on the server." => "Belirtilen dosya sunucuda bulunamadı.",
+"You can click here to return to %s." => "%s ana sayfasına dönmek için buraya tıklayabilirsiniz.",
 "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" => "Merhaba,\n\nSadece %s sizinle %s paylaşımını yaptığını bildiriyoruz.\nBuradan bakabilirsiniz: %s\n\n",
 "The share will expire on %s." => "Bu paylaşım %s tarihinde sona erecek.",
 "Cheers!" => "Hoşça kalın!",
@@ -163,6 +165,7 @@ $TRANSLATIONS = array(
 "SQLite will be used as database. For larger installations we recommend to change this." => "Veritabanı olarak SQLite kullanılacak. Daha büyük kurulumlar için bunu değiştirmenizi öneririz.",
 "Finish setup" => "Kurulumu tamamla",
 "Finishing …" => "Tamamlanıyor ...",
+"This application requires JavaScript for correct operation. Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable JavaScript</a> and reload the page." => "Uygulama, doğru çalışabilmesi için JavaScript gerektiriyor. Lütfen <a href=\"http://enable-javascript.com/\" target=\"_blank\">JavaScript'i etkinleştirin</a> ve sayfayı yeniden yükleyin.",
 "%s is available. Get more information on how to update." => "%s kullanılabilir. Nasıl güncelleyeceğiniz hakkında daha fazla bilgi alın.",
 "Log out" => "Çıkış yap",
 "Server side authentication failed!" => "Sunucu taraflı yetkilendirme başarısız!",
@@ -186,7 +189,7 @@ $TRANSLATIONS = array(
 "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." => "Devam etmeden önce lütfen veritabanının, yapılandırma ve veri klasörlerinin yedeklenmiş olduğundan emin olun.",
 "Start update" => "Güncellemeyi başlat",
 "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" => "Daha büyük kurulumlarda zaman aşımlarının önüne geçmek için, kurulum dizininizden aşağıdaki komutu da çalıştırabilirsiniz:",
-"This ownCloud instance is currently being updated, which may take a while." => "Bu ownCloud örneği şu anda güncelleniyor, bu biraz zaman alabilir.",
-"Please reload this page after a short time to continue using ownCloud." => "ownCloud kullanmaya devam etmek için kısa bir süre sonra lütfen sayfayı yenileyin."
+"This %s instance is currently being updated, which may take a while." => "Bu %s örneği şu anda güncelleniyor, bu biraz zaman alabilir.",
+"This page will refresh itself when the %s instance is available again." => "Bu sayfa, %s örneği tekrar kullanılabilir olduğunda kendini yenileyecektir."
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n > 1);";

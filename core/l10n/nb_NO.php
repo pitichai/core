@@ -140,7 +140,6 @@ $TRANSLATIONS = array(
 "Error favoriting" => "Feil ved favorittmerking",
 "Error unfavoriting" => "Feil ved fjerning av favorittmerking",
 "Access forbidden" => "Tilgang nektet",
-"Cloud not found" => "Sky ikke funnet",
 "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" => "Hei,\n\nDette er en beskjed om at %s delte %s med deg.\nVis den: %s\n\n",
 "The share will expire on %s." => "Delingen vil opphøre %s.",
 "Cheers!" => "Ha det!",
@@ -185,8 +184,6 @@ $TRANSLATIONS = array(
 "The theme %s has been disabled." => "Temaet %s har blitt deaktivert.",
 "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." => "Forsikre deg om at databasen, config-mappen og datamappen er blitt sikkerhetskopiert før du fortsetter.",
 "Start update" => "Start oppdatering",
-"To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" => "For å unngå tidsavbrudd ved store installasjoner, kan du i stedet kjøre følgende kommando fra installasjonsmappen:",
-"This ownCloud instance is currently being updated, which may take a while." => "Denne ownCloud-instansen oppdateres for øyeblikket, noe som kan ta litt tid.",
-"Please reload this page after a short time to continue using ownCloud." => "Vennligst last denne siden på nytt om en liten stund for å fortsette å bruke ownCloud."
+"To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" => "For å unngå tidsavbrudd ved store installasjoner, kan du i stedet kjøre følgende kommando fra installasjonsmappen:"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

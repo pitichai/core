@@ -105,7 +105,7 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 		// if content length is sent by client:
 		// double check if the file was fully received
 		// compare expected and actual size
-		if (isset($_SERVER['CONTENT_LENGTH'])) {
+		if (isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['REQUEST_METHOD'] !== 'LOCK') {
 			$expected = $_SERVER['CONTENT_LENGTH'];
 			$actual = $this->fileView->filesize($partFilePath);
 			if ($actual != $expected) {
@@ -167,7 +167,11 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 		if (!$this->info->isDeletable()) {
 			throw new \Sabre\DAV\Exception\Forbidden();
 		}
-		$this->fileView->unlink($this->path);
+
+		if (!$this->fileView->unlink($this->path)) {
+			// assume it wasn't possible to delete due to permissions
+			throw new \Sabre\DAV\Exception\Forbidden();
+		}
 
 		// remove properties
 		$this->removeProperties();

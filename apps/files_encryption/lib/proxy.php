@@ -54,7 +54,7 @@ class Proxy extends \OC_FileProxy {
 		$view = new \OC\Files\View();
 
 		// files outside of the files-folder are excluded
-		if(strpos($path, '/' . $uid . '/files') !== 0) {
+		if(strpos($path, '/' . $uid . '/files/') !== 0) {
 			return true;
 		}
 
@@ -247,7 +247,7 @@ class Proxy extends \OC_FileProxy {
 	 * @param resource $result
 	 * @return resource
 	 */
-	public function postFopen($path, &$result) {
+	public function postFopen($path, $result) {
 
 		$path = \OC\Files\Filesystem::normalizePath($path);
 

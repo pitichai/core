@@ -255,6 +255,7 @@ class OC {
 
 			// render error page
 			$tmpl = new OC_Template('', 'update.user', 'guest');
+			OC_Util::addscript('maintenance-check');
 			$tmpl->printPage();
 			die();
 		}
@@ -495,6 +496,9 @@ class OC {
 			require_once $vendorAutoLoad;
 		}
 
+		// initialize intl fallback is necessary
+		\Patchwork\Utf8\Bootup::initIntl();
+
 		if (!defined('PHPUNIT_RUN')) {
 			OC\Log\ErrorHandler::setLogger(OC_Log::$object);
 			if (defined('DEBUG') and DEBUG) {
@@ -595,10 +599,18 @@ class OC {
 		) {
 			header('HTTP/1.1 400 Bad Request');
 			header('Status: 400 Bad Request');
+
+			$domain = $_SERVER['SERVER_NAME'];
+			// Append port to domain in case it is not
+			if($_SERVER['SERVER_PORT'] !== '80' && $_SERVER['SERVER_PORT'] !== '443') {
+				$domain .= ':'.$_SERVER['SERVER_PORT'];
+			}
+
 			$tmpl = new OCP\Template('core', 'untrustedDomain', 'guest');
-			$tmpl->assign('domain', $_SERVER['SERVER_NAME']);
+			$tmpl->assign('domain', $domain);
 			$tmpl->printPage();
-			return;
+
+			exit();
 		}
 	}
 
@@ -706,15 +718,6 @@ class OC {
 			self::checkUpgrade();
 		}
 
-		if (!OC_User::isLoggedIn()) {
-			// Test it the user is already authenticated using Apaches AuthType Basic... very usable in combination with LDAP
-			if (!OC_Config::getValue('maintenance', false) && !self::checkUpgrade(false)) {
-				OC_App::loadApps(array('authentication'));
-			}
-			OC::tryBasicAuthLogin();
-		}
-
-
 		if (!self::$CLI and (!isset($_GET["logout"]) or ($_GET["logout"] !== 'true'))) {
 			try {
 				if (!OC_Config::getValue('maintenance', false) && !\OCP\Util::needUpgrade()) {
@@ -784,15 +787,6 @@ class OC {
 				OC_JSON::callCheck();
 				if (isset($_COOKIE['oc_token'])) {
 					OC_Preferences::deleteKey(OC_User::getUser(), 'login_token', $_COOKIE['oc_token']);
-				}
-				if (isset($_SERVER['PHP_AUTH_USER'])) {
-					if (isset($_COOKIE['oc_ignore_php_auth_user'])) {
-						// Ignore HTTP Authentication for 5 more mintues.
-						setcookie('oc_ignore_php_auth_user', $_SERVER['PHP_AUTH_USER'], time() + 300, OC::$WEBROOT.(empty(OC::$WEBROOT) ? '/' : ''));
-					} elseif ($_SERVER['PHP_AUTH_USER'] === self::$server->getSession()->get('loginname')) {
-						// Ignore HTTP Authentication to allow a different user to log in.
-						setcookie('oc_ignore_php_auth_user', $_SERVER['PHP_AUTH_USER'], 0, OC::$WEBROOT.(empty(OC::$WEBROOT) ? '/' : ''));
-					}
 				}
 				OC_User::logout();
 				// redirect to webroot and add slash if webroot is empty
@@ -919,7 +913,7 @@ class OC {
 	}
 
 	/**
-	 * Tries to login a user using the formbased authentication
+	 * Tries to login a user using the form based authentication
 	 * @return bool|void
 	 */
 	protected static function tryFormLogin() {
@@ -927,27 +921,31 @@ class OC {
 			return false;
 		}
 
-		OC_JSON::callCheck();
+		if(!OC_Util::isCallRegistered()) {
+			return false;
+		}
 		OC_App::loadApps();
 
 		//setup extra user backends
 		OC_User::setupBackends();
 
 		if (OC_User::login($_POST["user"], $_POST["password"])) {
+			$userId = OC_User::getUser();
+
 			// setting up the time zone
 			if (isset($_POST['timezone-offset'])) {
 				self::$server->getSession()->set('timezone', $_POST['timezone-offset']);
+				self::$server->getConfig()->setUserValue($userId, 'core', 'timezone', $_POST['timezone']);
 			}
 
-			$userid = OC_User::getUser();
-			self::cleanupLoginTokens($userid);
+			self::cleanupLoginTokens($userId);
 			if (!empty($_POST["remember_login"])) {
 				if (defined("DEBUG") && DEBUG) {
-					OC_Log::write('core', 'Setting remember login to cookie', OC_Log::DEBUG);
+					self::$server->getLogger()->debug('Setting remember login to cookie', array('app' => 'core'));
 				}
 				$token = \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate(32);
-				OC_Preferences::setValue($userid, 'login_token', $token, time());
-				OC_User::setMagicInCookie($userid, $token);
+				self::$server->getConfig()->setUserValue($userId, 'login_token', $token, time());
+				OC_User::setMagicInCookie($userId, $token);
 			} else {
 				OC_User::unsetMagicInCookie();
 			}
@@ -956,27 +954,6 @@ class OC {
 		}
 		return true;
 	}
-
-	/**
-	 * Try to login a user using HTTP authentication.
-	 * @return bool
-	 */
-	protected static function tryBasicAuthLogin() {
-		if (!isset($_SERVER["PHP_AUTH_USER"])
-			|| !isset($_SERVER["PHP_AUTH_PW"])
-			|| (isset($_COOKIE['oc_ignore_php_auth_user']) && $_COOKIE['oc_ignore_php_auth_user'] === $_SERVER['PHP_AUTH_USER'])
-		) {
-			return false;
-		}
-
-		if (OC_User::login($_SERVER["PHP_AUTH_USER"], $_SERVER["PHP_AUTH_PW"])) {
-			//OC_Log::write('core',"Logged in with HTTP Authentication", OC_Log::DEBUG);
-			OC_User::unsetMagicInCookie();
-			$_SERVER['HTTP_REQUESTTOKEN'] = OC_Util::callRegister();
-		}
-		return true;
-	}
-
 }
 
 if (!function_exists('get_temp_dir')) {

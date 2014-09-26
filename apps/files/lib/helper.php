@@ -66,7 +66,7 @@ class Helper
 		} elseif ($aType !== 'dir' and $bType === 'dir') {
 			return 1;
 		} else {
-			return strnatcasecmp($a->getName(), $b->getName());
+			return \OCP\Util::naturalSortCompare($a->getName(), $b->getName());
 		}
 	}
 
@@ -137,6 +137,9 @@ class Helper
 				$mountType .= '-root';
 			}
 			$entry['mountType'] = $mountType;
+		}
+		if (isset($i['extraData'])) {
+			$entry['extraData'] = $i['extraData'];
 		}
 		return $entry;
 	}

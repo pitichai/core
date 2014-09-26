@@ -140,7 +140,9 @@ $TRANSLATIONS = array(
 "Error favoriting" => "Napaka označevanja priljubljenosti",
 "Error unfavoriting" => "Napaka odstranjevanja oznake priljubljenosti",
 "Access forbidden" => "Dostop je prepovedan",
-"Cloud not found" => "Oblaka ni mogoče najti",
+"File not found" => "Datoteke ni mogoče najti",
+"The specified document has not been found on the server." => "Določenega dokumenta na strežniku ni mogoče najti.",
+"You can click here to return to %s." => "S klikom na povezavo boste vrnjeni na %s.",
 "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" => "Pozdravljeni,\n\noseba %s vam je omogočila souporabo %s.\nVir si lahko ogledate: %s\n\n",
 "The share will expire on %s." => "Povezava souporabe bo potekla %s.",
 "Cheers!" => "Na zdravje!",
@@ -163,6 +165,7 @@ $TRANSLATIONS = array(
 "SQLite will be used as database. For larger installations we recommend to change this." => "Za podatkovno zbirko bo uporabljen SQLite. Za večje zbirke je priporočljivo to zamenjati.",
 "Finish setup" => "Končaj nastavitev",
 "Finishing …" => "Poteka zaključevanje opravila ...",
+"This application requires JavaScript for correct operation. Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable JavaScript</a> and reload the page." => "Program zahteva podporo JavaScript za pravilno delovanje. Omogočite <a href=\"http://enable-javascript.com/\" target=\"_blank\">JavaScript</a> in ponovno osvežite stran.",
 "%s is available. Get more information on how to update." => "%s je na voljo. Pridobite več podrobnosti za posodobitev.",
 "Log out" => "Odjava",
 "Server side authentication failed!" => "Overitev s strežnika je spodletela!",
@@ -186,7 +189,7 @@ $TRANSLATIONS = array(
 "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." => "Pred nadaljevanjem se prepričajte se, da je ustvarjena varnostna kopija podatkovne zbirke, nastavitvenih datotek in podatkovne mape.",
 "Start update" => "Začni posodobitev",
 "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" => "Za razreševanje časovnih zahtev večjih namestitev lahko uporabite ukaz iz namestitvene mape:",
-"This ownCloud instance is currently being updated, which may take a while." => "Nastavitev oblaka ownCloud se trenutno posodablja. Opravilo je lahko dolgotrajno ...",
-"Please reload this page after a short time to continue using ownCloud." => "Ponovno naložite to stran po krajšem preteku časa in nadaljujte z uporabo oblaka ownCloud."
+"This %s instance is currently being updated, which may take a while." => "Povezava %s se posodablja. Opravilo je lahko dolgotrajno.",
+"This page will refresh itself when the %s instance is available again." => "Stran bo osvežena ko bo %s spet na voljo."
 );
 $PLURAL_FORMS = "nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);";

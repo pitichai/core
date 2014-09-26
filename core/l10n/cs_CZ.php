@@ -140,7 +140,9 @@ $TRANSLATIONS = array(
 "Error favoriting" => "Chyba při označování jako oblíbené",
 "Error unfavoriting" => "Chyba při odznačování jako oblíbené",
 "Access forbidden" => "Přístup zakázán",
-"Cloud not found" => "Cloud nebyl nalezen",
+"File not found" => "Soubor nenalezen",
+"The specified document has not been found on the server." => "Vybraný dokument nebyl na serveru nalezen.",
+"You can click here to return to %s." => "Kliknout zde pro návrat na %s.",
 "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" => "Hej ty tam,\n\njen ti chci dát vědět, že %s sdílel %s s tebou.\nZobraz si to: %s\n\n",
 "The share will expire on %s." => "Sdílení vyprší %s.",
 "Cheers!" => "Ať slouží!",
@@ -163,6 +165,7 @@ $TRANSLATIONS = array(
 "SQLite will be used as database. For larger installations we recommend to change this." => "Bude použita databáze SQLite. Pro větší instalace doporučujeme toto změnit.",
 "Finish setup" => "Dokončit nastavení",
 "Finishing …" => "Dokončuji...",
+"This application requires JavaScript for correct operation. Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable JavaScript</a> and reload the page." => "Tato aplikace potřebuje pro správnou funkčnost JavaScript. Prosím <a href=\"http://enable-javascript.com/\" target=\"_blank\">povolte JavaScript</a> a znovu načtěte stránku.",
 "%s is available. Get more information on how to update." => "%s je dostupná. Získejte více informací k postupu aktualizace.",
 "Log out" => "Odhlásit se",
 "Server side authentication failed!" => "Autentizace na serveru selhala!",
@@ -186,7 +189,7 @@ $TRANSLATIONS = array(
 "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." => "Před provedením dalšího kroku se prosím ujistěte, že databáze a konfigurační a datový adresář byly zazálohovány.  ",
 "Start update" => "Spustit aktualizaci",
 "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" => "Abyste zabránili vypršení časového limitu u větších instalací, můžete namísto toho spustit následující příkaz v hlavním adresáři:",
-"This ownCloud instance is currently being updated, which may take a while." => "Tato instalace ownCloud je právě aktualizována, může to chvíli trvat.",
-"Please reload this page after a short time to continue using ownCloud." => "Pro pokračování načtěte, prosím, stránku po chvíli znovu."
+"This %s instance is currently being updated, which may take a while." => "Tato instalace %s je právě aktualizována a to může chvíli trvat.",
+"This page will refresh itself when the %s instance is available again." => "Tato stránka se automaticky načte poté, co bude opět dostupná instance %s."
 );
 $PLURAL_FORMS = "nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;";
