@@ -3,6 +3,7 @@
  * @author Clark Tomlinson <clark@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @copyright 2014 Clark Tomlinson & Lukas Reschke
+ *
  * This file is licensed under the Affero General Public License version 3 or
  * later.
  * See the COPYING-README file.
@@ -21,6 +22,7 @@ use OCP\Share;
 use OCP\AppFramework\Controller;
 use OCP\IRequest;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\IApi;
 use OC\URLGenerator;
 use OC\AppConfig;
@@ -28,19 +30,36 @@ use OCP\ILogger;
 use OCA\Files_Sharing\Helper;
 use OCP\User;
 
+/**
+ * Class ShareController
+ *
+ * @package OCA\Files_Sharing\Controllers
+ */
 class ShareController extends Controller {
 
 	protected $userSession;
 	protected $appConfig;
+	protected $config;
 	protected $api;
 	protected $urlGenerator;
 	protected $userManager;
 	protected $logger;
 
+	/***
+	 * @param string $appName
+	 * @param IRequest $request
+	 * @param OC\User\Session $userSession
+	 * @param AppConfig $appConfig
+	 * @param IApi $api
+	 * @param URLGenerator $urlGenerator
+	 * @param OC\User\Manager $userManager
+	 * @param ILogger $logger
+	 */
 	public function __construct($appName,
 								IRequest $request,
 								OC\User\Session $userSession,
 								AppConfig $appConfig,
+								OCP\IConfig $config,
 								IApi $api,
 								URLGenerator $urlGenerator,
 								OC\User\Manager $userManager,
@@ -49,6 +68,7 @@ class ShareController extends Controller {
 
 		$this->userSession = $userSession;
 		$this->appConfig = $appConfig;
+		$this->config = $config;
 		$this->api = $api;
 		$this->urlGenerator = $urlGenerator;
 		$this->userManager = $userManager;
@@ -57,143 +77,196 @@ class ShareController extends Controller {
 
 
 	/**
+	 * Checks whether the current user is allowed to access the shared file
+	 * @param string $shareID
+	 * @return bool
+	 */
+	private function isAuthenticated($shareID) {
+		if ($this->userSession->getSession()->exists('public_link_authenticated')
+			&& $this->userSession->getSession()->get('public_link_authenticated') === $shareID) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * @PublicPage
 	 * @NoCSRFRequired
 	 *
 	 * @param string $token
-	 * @param string|null $password
 	 *
-	 * TODO: Password protection
-	 * TODO: Have shared directories working
-	 * TODO: Have downloads properly working
-	 * TODO: Redirect old links to the new one
-	 * @return TemplateResponse
+	 * @return TemplateResponse|RedirectResponse
 	 */
-	public function showShare($token, $password = null) {
-		\OC_User::setIncognitoMode(true);
-
-		// Check whether sharing is enabled
-		if (!$this->isSharingEnabled()) {
-			return new TemplateResponse('core', '404', null, 'guest');
-		}
-
+	public function showAuthenticate($token) {
 		$linkItem = Share::getShareByToken($token, false);
 
-		// Check whether share exists
+		if($this->isAuthenticated($linkItem['id'])) {
+			return new RedirectResponse($this->urlGenerator->linkToRoute('files_sharing.sharecontroller.showShare', array('token' => $token)));
+		}
+
+		return new TemplateResponse($this->appName, 'authenticate', null, 'guest');
+	}
+
+	/**
+	 * @PublicPage
+	 *
+	 * Authenticates against password-protected shares
+	 * @param $password
+	 * @param $token
+	 * @return RedirectResponse|TemplateResponse
+	 */
+	public function authenticate($password = '', $token) {
+		$linkItem = Share::getShareByToken($token, false);
 		if($linkItem === false) {
 			return new TemplateResponse('core', '404', null, 'guest');
 		}
 
-		// Check whether user is authenticated
-
-		$type = $linkItem['item_type'];
-		$fileSource = $linkItem['file_source'];
-		$shareOwner = $linkItem['uid_owner'];
-		$path = null;
-		$rootLinkItem = Share::resolveReShare($linkItem);
-
-		if (isset($rootLinkItem['uid_owner'])) {
-			// Check if user still exists
-			if($this->userManager->get($rootLinkItem['uid_owner']) === null) {
-				return new TemplateResponse('core', '404', null, 'guest');
+		if ($linkItem['share_type'] == OCP\Share::SHARE_TYPE_LINK) {
+			$forcePortable = (CRYPT_BLOWFISH != 1);
+			$hasher = new \PasswordHash(8, $forcePortable);
+			if (!($hasher->CheckPassword($password.$this->config->getSystemValue('passwordsalt', ''),
+				$linkItem['share_with']))) {
+				return new TemplateResponse($this->appName, 'authenticate', array('wrongpw' => true), 'guest');
+			} else {
+				// Save item id in session for future requests
+				$this->userSession->getSession()->set('public_link_authenticated', $linkItem['id']);
 			}
-			OC_Util::tearDownFS();
-			OC_Util::setupFS($rootLinkItem['uid_owner']);
-			$path = \OC\Files\Filesystem::getPath($linkItem['file_source']);
+		} else {
+			$this->logger->error('Unknown share type '.$linkItem['share_type']
+				.' for share id '.$linkItem['id'], array('app' => $this->appName));
+			header('HTTP/1.0 404 Not Found');
+			return new TemplateResponse('core', '404', null, 'guest');
 		}
 
-		if (isset($path)) {
-			if (!isset($linkItem['item_type'])) {
-				$this->logger->error('No item type set for share id: ' . $linkItem['id'], array('app' => $this->appName));
-				return new TemplateResponse('core', '404', null, 'guest');
+		return new RedirectResponse($this->urlGenerator->linkToRoute('files_sharing.sharecontroller.showShare', array('token' => $token)));
+	}
+
+	/**
+	 * @PublicPage
+	 * @NoCSRFRequired
+	 *
+	 * @param string $token
+	 *
+	 * TODO: Refactor properly
+	 * @return TemplateResponse
+	 */
+	public function showShare($token) {
+		\OC_User::setIncognitoMode(true);
+
+		// Check whether share exists
+		$linkItem = Share::getShareByToken($token, false);
+		if($linkItem === false) {
+			return new TemplateResponse('core', '404', null, 'guest');
+		}
+
+		$linkItem = OCP\Share::getShareByToken($token, false);
+		if (is_array($linkItem) && isset($linkItem['uid_owner'])) {
+			// seems to be a valid share
+			$shareOwner = $linkItem['uid_owner'];
+			$path = null;
+			$rootLinkItem = OCP\Share::resolveReShare($linkItem);
+			if (isset($rootLinkItem['uid_owner'])) {
+				OCP\JSON::checkUserExists($rootLinkItem['uid_owner']);
+				OC_Util::tearDownFS();
+				OC_Util::setupFS($rootLinkItem['uid_owner']);
+				$path = \OC\Files\Filesystem::getPath($linkItem['file_source']);
 			}
 		}
 
-		$tmplValue = array();
-		$tmplValue['mimetype'] = \OC\Files\Filesystem::getMimeType($path);
-		$tmplValue['filename'] = basename($linkItem['file_target']);
-		$tmplValue['directoryPath'] = $linkItem['file_target'];
-		$tmplValue['sharingToken'] = $linkItem['token'];
-		$tmplValue['downloadURL'] = $this->urlGenerator->getAbsoluteURL($this->urlGenerator->linkToRoute('files_sharing.sharecontroller.downloadshare', array('token' => $tmplValue['sharingToken'])));
-		$tmplValue['server2serversharing'] = Helper::isOutgoingServer2serverShareEnabled();
-		$tmplValue['protected'] = isset($linkItem['share_with']) ? 'true' : 'false';
-		$tmplValue['displayName'] = User::getDisplayName($shareOwner);
+		// Share is password protected - check whether the user is permitted to access the share
+		if (isset($linkItem['share_with'])) {
+			if(!$this->isAuthenticated($linkItem['id'])) {
+				return new RedirectResponse($this->urlGenerator->linkToRoute('files_sharing.sharecontroller.authenticate',
+					array('token' => $token)));
+			}
+		}
 
-		if(\OC\Files\Filesystem::is_dir($path)) {
-			// FOR FOLDERS ONLY --- START
-			$maxUploadFilesize = OCP\Util::maxUploadFilesize($path);
-			$freeSpace = OCP\Util::freeSpace($path);
-			$uploadLimit = OCP\Util::uploadLimit();
+		if (isset($_GET['path']) && Filesystem::isReadable($path . $_GET['path'])) {
+			$getPath = Filesystem::normalizePath($_GET['path']);
+			$path .= $getPath;
+		} else {
+			$getPath = '';
+		}
+		$dir = dirname($path);
+		$file = basename($path);
 
-			$folder = new Template('files', 'list', '');
-			$folder->assign('dir', $path);
+		$shareTmpl = array();
+		$shareTmpl['displayName'] = \OCP\User::getDisplayName($shareOwner);
+		$shareTmpl['filename'] = $file;
+		$shareTmpl['directory_path'] = $linkItem['file_target'];
+		$shareTmpl['mimetype'] = \OC\Files\Filesystem::getMimeType($path);
+		$shareTmpl['dirToken'] = $linkItem['token'];
+		$shareTmpl['sharingToken'] = $token;
+		$shareTmpl['server2serversharing'] = Helper::isOutgoingServer2serverShareEnabled();
+		$shareTmpl['protected'] = isset($linkItem['share_with']) ? 'true' : 'false';
+
+		// Show file list
+		if (\OC\Files\Filesystem::is_dir($path)) {
+			$shareTmpl['dir'] = $getPath;
+			$files = array();
+			$maxUploadFilesize=OCP\Util::maxUploadFilesize($path);
+
+			$freeSpace=OCP\Util::freeSpace($path);
+			$uploadLimit=OCP\Util::uploadLimit();
+			$folder = new OCP\Template('files', 'list', '');
+			$folder->assign('dir', $getPath);
 			$folder->assign('dirToken', $linkItem['token']);
 			$folder->assign('permissions', OCP\PERMISSION_READ);
 			$folder->assign('isPublic', true);
 			$folder->assign('publicUploadEnabled', 'no');
-			$folder->assign('files', array());
+			$folder->assign('files', $files);
 			$folder->assign('uploadMaxFilesize', $maxUploadFilesize);
 			$folder->assign('uploadMaxHumanFilesize', OCP\Util::humanFileSize($maxUploadFilesize));
 			$folder->assign('freeSpace', $freeSpace);
 			$folder->assign('uploadLimit', $uploadLimit); // PHP upload limit
 			$folder->assign('usedSpacePercent', 0);
 			$folder->assign('trash', false);
-			$tmplValue['folder'] = $folder->fetchPage();
-			return new TemplateResponse($this->appName, 'public-folder', $tmplValue, 'base');
+			$shareTmpl['folder'] = $folder->fetchPage();
+		} else {
+			$shareTmpl['dir'] = $dir;
 		}
+		$shareTmpl['downloadURL'] = $this->urlGenerator->linkToRouteAbsolute('files_sharing.sharecontroller.downloadShare', array('token' => $token));
 
-		return new TemplateResponse($this->appName, 'public-single', $tmplValue, 'base');
+		return new TemplateResponse($this->appName, 'public', $shareTmpl, 'base');
 	}
 
 	/**
-	 * Someone wants to reset their password:
-	 *
 	 * @PublicPage
 	 * @NoCSRFRequired
-	 *
+	 * @param string $token
+	 * @param string $files
+	 * @return RedirectResponse If the user is not authenticated
 	 */
-	public function downloadShare($token) {
-		/*if (is_array($args)) {
-			$path = self::getPath($args['token']);
-		} else {
-			$path = self::getPath($args);
-		}*/
+	public function downloadShare($token, $files = null) {
 		\OC_User::setIncognitoMode(true);
+
+		$linkItem = OCP\Share::getShareByToken($token, false);
+
+		// Share is password protected - check whether the user is permitted to access the share
+		if (isset($linkItem['share_with'])) {
+			if(!$this->isAuthenticated($linkItem['id'])) {
+				return new RedirectResponse($this->urlGenerator->linkToRoute('files_sharing.sharecontroller.authenticate',
+					array('token' => $token)));
+			}
+		}
+
+		if (!$this->api->isAppEnabled('files_encryption')) {
+			// encryption app requires the session to store the keys in
+			$this->userSession->getSession()->close();
+		}
 
 		$path = self::getPath($token);
 
-		// Check whether sharing is enabled
-		if (!$this->isSharingEnabled()) {
-			return new TemplateResponse('core', '404', null, 'guest');
+		if (!is_null($files)) { // download selected files
+			$files_list = json_decode($files);
+			// in case we get only a single file
+			if ($files_list === NULL ) {
+				$files_list = array($files);
+			}
+			OC_Files::get($path, $files_list, $_SERVER['REQUEST_METHOD'] == 'HEAD');
+		} else {
+			OC_Files::get(dirname($path), basename($path), $_SERVER['REQUEST_METHOD'] == 'HEAD');
 		}
-
-		$basePath = $path;
-		if (isset($_GET['path']) && Filesystem::isReadable($basePath . $_GET['path'])) {
-			$getPath = Filesystem::normalizePath($_GET['path']);
-			$path .= $getPath;
-		}
-
-		$dir = dirname($path);
-		$file = basename($path);
-		OC_Files::get($dir, $file, $_SERVER['REQUEST_METHOD'] == 'HEAD');
-	}
-
-	/**
-	 * Check whether sharing is enabled
-	 * @return bool
-	 */
-	private function isSharingEnabled() {
-		// FIXME: Check whether the files_sharing app is enabled, this is currently done here since the route is globally defined
-		if(!$this->api->isAppEnabled($this->appName)) {
-			return false;
-		}
-
-		// Check whether public sharing is enabled
-		if($this->appConfig->getValue('core', 'shareapi_allow_links', 'yes') !== 'yes') {
-			return false;
-		}
-
-		return true;
 	}
 
 	/**

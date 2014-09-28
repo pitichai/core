@@ -12,11 +12,18 @@ namespace OCA\Files_Sharing;
 
 use OC\AppFramework\Utility\SimpleContainer;
 use OCA\Files_Sharing\Controllers\ShareController;
+use OCA\Files_Sharing\Middleware\SharingCheckMiddleware;
 use \OCP\AppFramework\App;
 
+/**
+ * @package OCA\Files_Sharing
+ */
 class Application extends App {
 
 
+	/**
+	 * @param array $urlParams
+	 */
 	public function __construct(array $urlParams=array()){
 		parent::__construct('files_sharing', $urlParams);
 
@@ -31,13 +38,27 @@ class Application extends App {
 				$c->query('Request'),
 				$c->query('ServerContainer')->getUserSession(),
 				$c->query('ServerContainer')->getAppConfig(),
+				$c->query('ServerContainer')->getConfig(),
 				$c->getCoreApi(),
 				$c->query('ServerContainer')->getUrlGenerator(),
 				$c->query('ServerContainer')->getUserManager(),
 				$c->query('ServerContainer')->getLogger()
 			);
 		});
-	}
 
+		/**
+		 * Middleware
+		 */
+		$container->registerService('SharingCheckMiddleware', function(SimpleContainer $c){
+			return new SharingCheckMiddleware(
+				$c->query('AppName'),
+				$c->query('ServerContainer')->getAppConfig(),
+				$c->getCoreApi()
+			);
+		});
+
+		// Execute middlewares
+		$container->registerMiddleware('SharingCheckMiddleware');
+	}
 
 }
