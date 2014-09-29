@@ -106,7 +106,7 @@ class ShareController extends Controller {
 			return new RedirectResponse($this->urlGenerator->linkToRoute('files_sharing.sharecontroller.showShare', array('token' => $token)));
 		}
 
-		return new TemplateResponse($this->appName, 'authenticate', null, 'guest');
+		return new TemplateResponse($this->appName, 'authenticate', array(), 'guest');
 	}
 
 	/**
@@ -120,7 +120,7 @@ class ShareController extends Controller {
 	public function authenticate($password = '', $token) {
 		$linkItem = Share::getShareByToken($token, false);
 		if($linkItem === false) {
-			return new TemplateResponse('core', '404', null, 'guest');
+			return new TemplateResponse('core', '404', array(), 'guest');
 		}
 
 		if ($linkItem['share_type'] == OCP\Share::SHARE_TYPE_LINK) {
@@ -137,7 +137,7 @@ class ShareController extends Controller {
 			$this->logger->error('Unknown share type '.$linkItem['share_type']
 				.' for share id '.$linkItem['id'], array('app' => $this->appName));
 			header('HTTP/1.0 404 Not Found');
-			return new TemplateResponse('core', '404', null, 'guest');
+			return new TemplateResponse('core', '404', array(), 'guest');
 		}
 
 		return new RedirectResponse($this->urlGenerator->linkToRoute('files_sharing.sharecontroller.showShare', array('token' => $token)));
@@ -158,7 +158,7 @@ class ShareController extends Controller {
 		// Check whether share exists
 		$linkItem = Share::getShareByToken($token, false);
 		if($linkItem === false) {
-			return new TemplateResponse('core', '404', null, 'guest');
+			return new TemplateResponse('core', '404', array(), 'guest');
 		}
 
 		$linkItem = OCP\Share::getShareByToken($token, false);
