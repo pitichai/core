@@ -15,8 +15,8 @@ use OC;
 use OC\Files\Filesystem;
 use OC_Files;
 use OC_Util;
-use OCP\Template;
 use OCP;
+use OCP\Template;
 use OCP\JSON;
 use OCP\Share;
 use OCP\AppFramework\Controller;
@@ -29,6 +29,7 @@ use OC\AppConfig;
 use OCP\ILogger;
 use OCA\Files_Sharing\Helper;
 use OCP\User;
+use OCP\Util;
 
 /**
  * Class ShareController
@@ -45,11 +46,12 @@ class ShareController extends Controller {
 	protected $userManager;
 	protected $logger;
 
-	/***
+	/**
 	 * @param string $appName
 	 * @param IRequest $request
 	 * @param OC\User\Session $userSession
 	 * @param AppConfig $appConfig
+	 * @param OCP\IConfig $config
 	 * @param IApi $api
 	 * @param URLGenerator $urlGenerator
 	 * @param OC\User\Manager $userManager
@@ -146,11 +148,11 @@ class ShareController extends Controller {
 	 * @NoCSRFRequired
 	 *
 	 * @param string $token
+	 * @param string $path
 	 *
-	 * TODO: Refactor properly
 	 * @return TemplateResponse
 	 */
-	public function showShare($token) {
+	public function showShare($token, $path = '') {
 		\OC_User::setIncognitoMode(true);
 
 		// Check whether share exists
@@ -160,55 +162,50 @@ class ShareController extends Controller {
 		}
 
 		$linkItem = OCP\Share::getShareByToken($token, false);
-		if (is_array($linkItem) && isset($linkItem['uid_owner'])) {
-			// seems to be a valid share
-			$shareOwner = $linkItem['uid_owner'];
-			$path = null;
-			$rootLinkItem = OCP\Share::resolveReShare($linkItem);
-			if (isset($rootLinkItem['uid_owner'])) {
-				OCP\JSON::checkUserExists($rootLinkItem['uid_owner']);
-				OC_Util::tearDownFS();
-				OC_Util::setupFS($rootLinkItem['uid_owner']);
-				$path = \OC\Files\Filesystem::getPath($linkItem['file_source']);
-			}
+		$shareOwner = $linkItem['uid_owner'];
+		$originalSharePath = null;
+		$rootLinkItem = OCP\Share::resolveReShare($linkItem);
+		if (isset($rootLinkItem['uid_owner'])) {
+			OCP\JSON::checkUserExists($rootLinkItem['uid_owner']);
+			OC_Util::tearDownFS();
+			OC_Util::setupFS($rootLinkItem['uid_owner']);
+			$originalSharePath = Filesystem::getPath($linkItem['file_source']);
 		}
 
 		// Share is password protected - check whether the user is permitted to access the share
-		if (isset($linkItem['share_with'])) {
-			if(!$this->isAuthenticated($linkItem['id'])) {
-				return new RedirectResponse($this->urlGenerator->linkToRoute('files_sharing.sharecontroller.authenticate',
-					array('token' => $token)));
-			}
+		if (isset($linkItem['share_with']) && !$this->isAuthenticated($linkItem['id'])) {
+			return new RedirectResponse($this->urlGenerator->linkToRoute('files_sharing.sharecontroller.authenticate',
+				array('token' => $token)));
 		}
 
-		if (isset($_GET['path']) && Filesystem::isReadable($path . $_GET['path'])) {
-			$getPath = Filesystem::normalizePath($_GET['path']);
-			$path .= $getPath;
-		} else {
-			$getPath = '';
+		$getPath = '';
+		if (Filesystem::isReadable($originalSharePath . $path)) {
+			$getPath = Filesystem::normalizePath($path);
+			$originalSharePath .= $getPath;
 		}
-		$dir = dirname($path);
-		$file = basename($path);
+
+		$dir = dirname($originalSharePath);
+		$file = basename($originalSharePath);
 
 		$shareTmpl = array();
-		$shareTmpl['displayName'] = \OCP\User::getDisplayName($shareOwner);
+		$shareTmpl['displayName'] = User::getDisplayName($shareOwner);
 		$shareTmpl['filename'] = $file;
 		$shareTmpl['directory_path'] = $linkItem['file_target'];
-		$shareTmpl['mimetype'] = \OC\Files\Filesystem::getMimeType($path);
+		$shareTmpl['mimetype'] = Filesystem::getMimeType($originalSharePath);
 		$shareTmpl['dirToken'] = $linkItem['token'];
 		$shareTmpl['sharingToken'] = $token;
 		$shareTmpl['server2serversharing'] = Helper::isOutgoingServer2serverShareEnabled();
 		$shareTmpl['protected'] = isset($linkItem['share_with']) ? 'true' : 'false';
+		$shareTmpl['dir'] = $dir;
 
 		// Show file list
-		if (\OC\Files\Filesystem::is_dir($path)) {
+		if (Filesystem::is_dir($originalSharePath)) {
 			$shareTmpl['dir'] = $getPath;
 			$files = array();
-			$maxUploadFilesize=OCP\Util::maxUploadFilesize($path);
-
-			$freeSpace=OCP\Util::freeSpace($path);
-			$uploadLimit=OCP\Util::uploadLimit();
-			$folder = new OCP\Template('files', 'list', '');
+			$maxUploadFilesize = Util::maxUploadFilesize($originalSharePath);
+			$freeSpace = Util::freeSpace($originalSharePath);
+			$uploadLimit = Util::uploadLimit();
+			$folder = new Template('files', 'list', '');
 			$folder->assign('dir', $getPath);
 			$folder->assign('dirToken', $linkItem['token']);
 			$folder->assign('permissions', OCP\PERMISSION_READ);
@@ -222,9 +219,8 @@ class ShareController extends Controller {
 			$folder->assign('usedSpacePercent', 0);
 			$folder->assign('trash', false);
 			$shareTmpl['folder'] = $folder->fetchPage();
-		} else {
-			$shareTmpl['dir'] = $dir;
 		}
+
 		$shareTmpl['downloadURL'] = $this->urlGenerator->linkToRouteAbsolute('files_sharing.sharecontroller.downloadShare', array('token' => $token));
 
 		return new TemplateResponse($this->appName, 'public', $shareTmpl, 'base');
@@ -235,9 +231,10 @@ class ShareController extends Controller {
 	 * @NoCSRFRequired
 	 * @param string $token
 	 * @param string $files
-	 * @return RedirectResponse If the user is not authenticated
+	 * @param string $path
+	 * @return void|RedirectResponse
 	 */
-	public function downloadShare($token, $files = null) {
+	public function downloadShare($token, $files = null, $path = '') {
 		\OC_User::setIncognitoMode(true);
 
 		$linkItem = OCP\Share::getShareByToken($token, false);
@@ -255,7 +252,12 @@ class ShareController extends Controller {
 			$this->userSession->getSession()->close();
 		}
 
-		$path = self::getPath($token);
+		$originalSharePath = self::getPath($token);
+
+		if (isset($originalSharePath) && Filesystem::isReadable($originalSharePath . $path)) {
+				$getPath = Filesystem::normalizePath($path);
+				$originalSharePath .= $getPath;
+		}
 
 		if (!is_null($files)) { // download selected files
 			$files_list = json_decode($files);
@@ -263,9 +265,10 @@ class ShareController extends Controller {
 			if ($files_list === NULL ) {
 				$files_list = array($files);
 			}
-			OC_Files::get($path, $files_list, $_SERVER['REQUEST_METHOD'] == 'HEAD');
+
+			OC_Files::get($originalSharePath, $files_list, $_SERVER['REQUEST_METHOD'] == 'HEAD');
 		} else {
-			OC_Files::get(dirname($path), basename($path), $_SERVER['REQUEST_METHOD'] == 'HEAD');
+			OC_Files::get(dirname($originalSharePath), basename($originalSharePath), $_SERVER['REQUEST_METHOD'] == 'HEAD');
 		}
 	}
 
