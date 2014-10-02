@@ -53,8 +53,11 @@ class Proxy extends \OC_FileProxy {
 
 		$view = new \OC\Files\View();
 
-		// files outside of the files-folder are excluded
-		if(strpos($path, '/' . $uid . '/files/') !== 0) {
+		// we only encrypt/decrypt files in the files and files_versions folder
+		if(
+			strpos($path, '/' . $uid . '/files/') !== 0 &&
+			strpos($path, '/' . $uid . '/files_versions/') !== 0) {
+
 			return true;
 		}
 
